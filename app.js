@@ -1,24 +1,23 @@
-const createError = require('http-errors');
-const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
+import createError from 'http-errors';
+import express from 'express';
+import http from 'http';
+import path from 'path';
+import cookieParser from 'cookie-parser';
+import logger from 'morgan';
 
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+// Routers
+import indexRouter from './routes/index';
 
 const app = express();
 
-// view engine setup
-
+// Middleware
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/api', indexRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -39,7 +38,7 @@ app.use(function(err, req, res, next) {
 /**
  * Get port from environment and store in Express.
  */
-const port = process.env.PORT || '8080';
+const port = process.env.PORT || '8081';
 app.set('port', port);
 
 /**
@@ -89,4 +88,4 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
-module.exports = app;
+export default app;
