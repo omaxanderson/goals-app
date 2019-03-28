@@ -19,7 +19,7 @@ const run = async () => {
 		// Run each migration in order
 		migrationsNotRun.sort();
 
-		migrationsNotRun.forEach(async (migration) => {
+		async migrationsNotRun.forEach(async (migration) => {
 			const migrationSql = require(`./files/${migration}`).default;
 			if (migrationSql !== 'QUERY') {
 				try {
