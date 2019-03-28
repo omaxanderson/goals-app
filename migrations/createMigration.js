@@ -11,9 +11,8 @@ if (process.argv.length < 3) {
 
 
 const d = new Date();
-const filename = `${d.getFullYear()}${d.getMonth() + 1}${d.getDate()}${d.getHours()}${d.getMinutes()}${d.getSeconds()}_${process.argv[2]}.js`;
-console.log(`${filename}`);
+const filename = `files/${d.getFullYear()}${d.getMonth() + 1}${d.getDate()}${d.getHours()}${d.getMinutes()}${d.getSeconds()}_${process.argv[2]}.js`;
 
-console.log(path.join(__dirname, filename));
+console.log(filename);
 
 fs.writeFileSync(path.join(__dirname, filename), "export default 'QUERY';");

@@ -2,44 +2,55 @@ import Db from './db';
 
 class QueryBuilder {
 
-	_table = null;
-	_select = [];
-	_joins = [];
-	_where = [];
-	_groupBy = [];
-	_having = [];
-	_order = [];
-	_sql = null;
+	constructor() {
+		this._table = null;
+		this._select = [];
+		this._joins = [];
+		this._where = [];
+		this._groupBy = [];
+		this._having = [];
+		this._order = [];
+		this._sql = null;
+
+	}
+
 
 	from(table) {
 		if (this._table) {
 			throw { error: "Table has already been set" };
 		}
 		this._table = table;
+		return this;
 	}
 
 	addSelect(select) {
 		this._select.push(select);
+		return this;
 	}
 
 	addJoin(join) {
 		this._joins.push(join);
+		return this;
 	}
 
 	addWhere(where) {
 		this._where.push(where);
+		return this;
 	}
 
 	addGroupBy(groupBy) {
 		this._groupBy.push(groupBy);
+		return this;
 	}
 
 	addHaving(having) {
 		this._having.push(having);
+		return this;
 	}
 
 	addOrder(order) {
 		this._order.push(order);
+		return this;
 	}
 
 	// Used internally to build the sql statement
@@ -82,9 +93,6 @@ class QueryBuilder {
 		sql += this._order.join(' AND ');
 
 		this._sql = sql;
-
-		console.log(sql);
-			
 	}
 
 	async execute(params = {}) {
