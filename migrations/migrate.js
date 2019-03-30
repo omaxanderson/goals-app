@@ -19,14 +19,14 @@ const run = async () => {
 		// Run each migration in order
 		migrationsNotRun.sort();
 
-		async migrationsNotRun.forEach(async (migration) => {
+		migrationsNotRun.forEach(async (migration) => {
 			const migrationSql = require(`./files/${migration}`).default;
 			if (migrationSql !== 'QUERY') {
 				try {
 					const result = await Db.query(migrationSql);
 
 					// if the migration ran, insert it into the database
-					const insertResult = await Db.query(`INSERT INTO migration (migration_name) VALUES ('${migration}')`);
+					const insertResult = await Db.query(`INSERT INTO migrations (migration_name) VALUES ('${migration}')`);
 
 					console.log(`${migration} ran successfully.`);
 				} catch (e) {
@@ -36,7 +36,6 @@ const run = async () => {
 			}
 		});
 
-		console.log('Done.');
 	} catch (err) {
 		// likely the migrations table doesn't exist, so we need to just run it anyway
 		// Also I feel like this is pretty bad coding practice but eh whatever

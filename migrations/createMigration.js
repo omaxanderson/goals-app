@@ -15,4 +15,4 @@ const filename = `files/${d.getFullYear()}${d.getMonth() + 1}${d.getDate()}${d.g
 
 console.log(filename);
 
-fs.writeFileSync(path.join(__dirname, filename), "export default 'QUERY';");
+fs.writeFileSync(path.join(__dirname, filename), "export default `QUERY`;");
