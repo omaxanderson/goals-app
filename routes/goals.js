@@ -1,16 +1,22 @@
 import express from 'express';
+import * as GoalsController from '../controllers/Goals';
 const router = express.Router();
 
 // GET a list of goals 
-router.get('/', (req, res, next) => {
-	res.send(JSON.stringify({
-		from: 'goals.js',
-		method: 'get',
-	}));
+router.get('/', async (req, res, next) => {
+	const params = {};
+	try {
+		const result = await GoalsController.getAll(1, params);
+		console.log('result from router', JSON.stringify(result));
+		res.send(JSON.stringify(result));
+	} catch (e) {
+		console.log(e);
+		res.send(e);
+	}
 });
 
 // GET a specific goal 
-router.get('/:goalId', (req, res, next) => {
+router.get('/:goalId', async (req, res, next) => {
 	res.send(JSON.stringify({
 		from: 'goals.js',
 		method: 'get single',
@@ -18,7 +24,7 @@ router.get('/:goalId', (req, res, next) => {
 });
 
 // POST create a new goal
-router.post('/', (req, res, next) => {
+router.post('/', async (req, res, next) => {
 	res.send(JSON.stringify({
 		from: 'goals.js',
 		method: 'post',
@@ -26,7 +32,7 @@ router.post('/', (req, res, next) => {
 });
 
 // PUT create a new goal
-router.put('/:goalId', (req, res, next) => {
+router.put('/:goalId', async (req, res, next) => {
 	res.send(JSON.stringify({
 		from: 'goals.js',
 		method: 'put',
@@ -34,7 +40,7 @@ router.put('/:goalId', (req, res, next) => {
 });
 
 // DELETE create a new goal
-router.delete('/:goalId', (req, res, next) => {
+router.delete('/:goalId', async (req, res, next) => {
 	res.send(JSON.stringify({
 		from: 'goals.js',
 		method: 'delete',

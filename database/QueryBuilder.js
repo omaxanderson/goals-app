@@ -11,7 +11,6 @@ class QueryBuilder {
 		this._having = [];
 		this._order = [];
 		this._sql = null;
-
 	}
 
 
