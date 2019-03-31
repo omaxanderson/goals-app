@@ -25,10 +25,19 @@ router.get('/:goalId', async (req, res, next) => {
 
 // POST create a new goal
 router.post('/', async (req, res, next) => {
+	try {
+		const result = await GoalsController.create(req.body);
+		res.send(JSON.stringify(result));
+	} catch (e) {
+		console.log(e);
+		res.send(e);
+	}
+	/*
 	res.send(JSON.stringify({
 		from: 'goals.js',
 		method: 'post',
 	}));
+	*/
 });
 
 // PUT create a new goal

@@ -4,6 +4,7 @@ import http from 'http';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
+import bodyParser from 'body-parser';
 
 // Routers
 import indexRouter from './routes/index';
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.json());
 
 app.use('/api', indexRouter);
 app.use('/api/goals', goalsRouter);

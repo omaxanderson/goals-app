@@ -21,4 +21,19 @@ export default class Db {
 	static format(sql, params) {
 		return mysql.format(sql, params);
 	}
+
+	/* Insert a row into the database
+	 *
+	 * @param table String
+	 * @param values Object - contains the key-value pairs that are to be inserted
+	 * @param ignore Boolean - whether or not to INSERT IGNORE
+	 */
+	static insert(table, values, ignore = false) {
+		const columns = Object.keys(values).filter(key => values[key]).join(', ');
+		const data = Object.values(values).filter(value => value)
+			.map(value => (typeof value !== 'number' ? `'${value}'` : value))
+			.join(', ');
+		const sql = `INSERT ${ignore ? 'IGNORE ' : ''}INTO ${table} (${columns}) VALUES (${data})`;
+		return this.query(sql);
+	}
 }

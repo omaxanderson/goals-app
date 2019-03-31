@@ -17,3 +17,18 @@ export const getAll = async (userId, params) => {
 		throw { error: err };
 	}
 }
+
+export const create = async (data) => {
+	console.log(data);
+	const goal = new Goals();
+	goal.title = data.title;
+	goal.description = data.description;
+	goal.startDate = data.startDate;
+	goal.endDate = data.endDate;
+	goal.goalReached= data.goalReached;
+	try {
+		return await goal.save();
+	} catch (e) {
+		return e;
+	}
+}

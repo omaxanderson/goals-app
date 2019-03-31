@@ -21,4 +21,9 @@ export default class Model {
 	execute = async () => {
 		return await this._query.execute();
 	}
+
+	fetchOne = async () => {
+		const data = await this._query.execute();
+		return data[0];
+	}
 }
