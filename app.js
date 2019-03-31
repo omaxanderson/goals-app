@@ -7,6 +7,7 @@ import logger from 'morgan';
 
 // Routers
 import indexRouter from './routes/index';
+import goalsRouter from './routes/goals';
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api', indexRouter);
+app.use('/api/goals', goalsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
