@@ -32,3 +32,25 @@ export const create = async (data) => {
 		return e;
 	}
 }
+
+export const update = async (goalId, data) => {
+	const goal = new Goals();
+	await goal.loadById(goalId);
+
+	for (const column in data) {
+		goal[column] = data[column];
+	}
+
+	try {
+		return await goal.save();
+	} catch (e) {
+		console.log('catching and throwing from controller');
+		throw e;
+	}
+}
+
+export const remove = async (goalId) => {
+	const goal = new Goals(goalId);
+	const result = await goal.remove();
+	return result;
+}

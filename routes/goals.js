@@ -30,6 +30,8 @@ router.post('/', async (req, res, next) => {
 		res.send(JSON.stringify(result));
 	} catch (e) {
 		console.log(e);
+		console.log('catching from router');
+		res.status(400);
 		res.send(e);
 	}
 	/*
@@ -42,18 +44,25 @@ router.post('/', async (req, res, next) => {
 
 // PUT create a new goal
 router.put('/:goalId', async (req, res, next) => {
-	res.send(JSON.stringify({
-		from: 'goals.js',
-		method: 'put',
-	}));
+	try {
+		const result = await GoalsController.update(req.params.goalId, req.body);
+		res.send(JSON.stringify(result));
+	} catch (e) {
+		console.log(e);
+		res.status(400);
+		res.send(e);
+	}
 });
 
-// DELETE create a new goal
+// DELETE specific goal
 router.delete('/:goalId', async (req, res, next) => {
-	res.send(JSON.stringify({
-		from: 'goals.js',
-		method: 'delete',
-	}));
+	try {
+		const result = await GoalsController.remove(req.params.goalId);
+		res.send(JSON.stringify(result));
+	} catch (e) {
+		res.status(400);
+		res.send(e);
+	}
 });
 
 module.exports = router;

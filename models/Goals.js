@@ -3,14 +3,14 @@ import Db from '../database/db';
 
 // Lets get this to extend a base Model class
 class Goals extends Model {
-	constructor(params) {
-		super(params);
+	constructor(goalId = null) {
+		super(goalId);
 
 		// Set the instance variables
 		this._columns = [];
 		
 		this._userId = 0;
-		this._goalId = null;
+		this._goalId = goalId;
 		this._title = null;
 		this._description = null;
 		this._startDate = null;
@@ -22,12 +22,54 @@ class Goals extends Model {
 
 	loadById = async (id) => {
 		this.addWhere(`goal_id = ${id}`);
-		const data = await this.fetchOne();
+		this.goalId = id;
+		try {
+			const data = await this.fetchOne();
+			this._userId = data.user_id;
+			this._title = data.title;
+			this._description = data.description;
+			this._startDate = data.start_date;
+			this._endDate = data.end_date;
+			this._goalReached = data.goal_reached;
+		} catch (e) {
+			console.log(e);
+			throw e;
+		}
+
 	}
 
 	save = async () => {
 		if (this._goalId) {
 			// update existing goal
+			const sql = Db.format(`UPDATE goals
+				SET user_id = ?,
+					title = ?,
+					description = ?,
+					start_date = ?,
+					end_date = ?,
+					goal_reached = ?
+				WHERE goal_id = ?`,
+				[
+					this._userId,
+					this._title,
+					this._description,
+					this._startDate,
+					this._endDate,
+					this._goalReached,
+					this._goalId
+				]
+			);
+			try {
+				const result = await Db.query(sql);
+				if (result.changedRows) {
+					return result;
+				} else {
+					throw { error: 'No rows affected' };
+				}
+			} catch (e) {
+				console.log('throwing from model');
+				throw e;
+			}
 		} else {
 			// create new goal
 			try {
@@ -50,7 +92,20 @@ class Goals extends Model {
 		}
 	}
 
+	remove = async () => {
+		try {
+			const result = Db.query(Db.format(`DELETE from goals
+				WHERE goal_id = ?`,
+				[ this._goalId ]
+			));
+			return result;
+		} catch (e) {
+			throw e;
+		}
+	}
+
 	// ============ 	Setters   ===============
+	get title() { return this._title; }
 	set goalId(id) {
 		this._goalId = id;
 		return this;
@@ -106,7 +161,6 @@ class Goals extends Model {
 	addColumn = (col) => {
 		this._columns.push(col);
 	}
-
 
 	/* Gets all goals based on pre-defined criteria
 	 *

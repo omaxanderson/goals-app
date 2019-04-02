@@ -54,8 +54,12 @@ class QueryBuilder {
 
 	// Used internally to build the sql statement
 	_buildQuery() {
-		if (!this._table || !this._select.length) {
-			throw { error: "Table and select statements are required!" };
+		if (!this._table) {
+			throw { error: "Table name required!" };
+		}
+		if (!this._select.length) {
+			// throw { error: "Select statement required" };
+			this._select.push('*');
 		}
 
 		let sql = 'SELECT ';
