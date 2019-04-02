@@ -15,12 +15,18 @@ class Goals extends Model {
 		this._description = null;
 		this._startDate = null;
 		this._endDate = null;
+		this._isRecurring = null;
+		this._daily = null;
+		this._weekly = null;
+		this._monthly = null;
+		this._yearly = null;
 		this._goalReached = false;
 
 		this.from('goals');
 	}
 
 	loadById = async (id) => {
+		this.addJoin('JOIN goal_schedule USING (goal_id)');
 		this.addWhere(`goal_id = ${id}`);
 		this.goalId = id;
 		try {
@@ -28,44 +34,65 @@ class Goals extends Model {
 			this._userId = data.user_id;
 			this._title = data.title;
 			this._description = data.description;
+			this._goalReached = data.goal_reached;
 			this._startDate = data.start_date;
 			this._endDate = data.end_date;
-			this._goalReached = data.goal_reached;
+			this._isRecurring = data.is_recurring;
+			this._daily = data.daily;
+			this._weekly = data.weekly;
+			this._monthly = data.monthly;
+			this._yearly = data.yearly;
+			console.log('from model', this._startDate, this._endDate);
 		} catch (e) {
 			console.log(e);
 			throw e;
 		}
-
 	}
 
 	save = async () => {
 		if (this._goalId) {
 			// update existing goal
-			const sql = Db.format(`UPDATE goals
-				SET user_id = ?,
-					title = ?,
-					description = ?,
-					start_date = ?,
-					end_date = ?,
-					goal_reached = ?
-				WHERE goal_id = ?`,
-				[
-					this._userId,
-					this._title,
-					this._description,
-					this._startDate,
-					this._endDate,
-					this._goalReached,
-					this._goalId
-				]
-			);
 			try {
-				const result = await Db.query(sql);
-				if (result.changedRows) {
-					return result;
-				} else {
-					throw { error: 'No rows affected' };
-				}
+				const goalUpdate = await Db.query(Db.format(`UPDATE goals
+					SET user_id = ?,
+						title = ?,
+						description = ?,
+						goal_reached = ?
+					WHERE goal_id = ?`,
+					[
+						this._userId,
+						this._title,
+						this._description,
+						this._goalReached,
+						this._goalId
+					]
+				));
+
+				const scheduleUpdate = await Db.query(Db.format(`UPDATE goal_schedule
+					SET start_date = ?,
+						end_date = ?,
+						is_recurring = ?,
+						daily = ?,
+						weekly = ?,
+						monthly = ?,
+						yearly = ?
+					WHERE goal_id = ?`,
+					[
+						this._startDate,
+						this._endDate,
+						this._isRecurring,
+						this._daily,
+						this._weekly,
+						this._monthly,
+						this._yearly,
+						this._goalId,
+					]
+				));
+
+				return {
+					goalUpdate,
+					scheduleUpdate,
+				};
 			} catch (e) {
 				console.log('throwing from model');
 				throw e;
@@ -73,18 +100,26 @@ class Goals extends Model {
 		} else {
 			// create new goal
 			try {
-				const result = await Db.insert('goals', {
+				const goalsInsert = await Db.insert('goals', {
 					title: 			this._title,
 					description: 	this._description,
-					start_date: 	this._startDate,
-					end_date: 		this._endDate,
 					goal_reached: 	this._goalReached,
 					user_id: 		1	// Hard coding this since not planning on adding other users yet
 				});
+				const scheduleInsert = await Db.insert('goal_schedule', {
+					goal_id: goalsInsert.insertId,
+					start_date: this._startDate,
+					end_date: this._endDate,
+					is_recurring: this._isRecurring,
+					daily: this._daily,
+					weekly: this._weekly,
+					monthly: this._monthly,
+					yearly: this._yearly
+				});
 
 				return { 
-					result: 'success',
-					goalId: result.insertId,
+					goalsInsert,
+					scheduleInsert,
 				}
 			} catch (e) {
 				throw e;
@@ -106,53 +141,20 @@ class Goals extends Model {
 
 	// ============ 	Setters   ===============
 	get title() { return this._title; }
-	set goalId(id) {
-		this._goalId = id;
-		return this;
-	}
 
-	set title(title) {
-		this._title = title;
-		return this;
-	}
-
-	set description(description) {
-		this._description = description;
-		return this;
-	}
-
-	set endDate(endDate) {
-		this._endDate = endDate;
-		return this;
-	}
-
-	set startDate(startDate) {
-		this._startDate = startDate;
-		return this;
-	}
-
-	set goalReached(goalReached) {
-		this._goalReached = goalReached;
-		return this;
-	}
-
-	/* Sets the list of columns
-	 *
-	 * @columns Array
-	 */
-	set columns(columns) {
-		this._columns = columns;
-		return this;
-	}
-
-	/* Set the user id
-	 *
-	 * @param id Number
-	 */
-	set userId(id) {
-		this.addWhere(`user_id = ${id}`);
-		this._userId = id;
-	}
+	set goalId(id) { this._goalId = id; }
+	set title(title) { this._title = title; }
+	set description(description) { this._description = description; }
+	set endDate(endDate) { this._endDate = endDate; }
+	set startDate(startDate) { this._startDate = startDate; }
+	set goalReached(goalReached) { this._goalReached = goalReached; }
+	set columns(columns) { this._columns = columns; }
+	set userId(id) { this.addWhere(`user_id = ${id}`); }
+	set isRecurring(isRecurring) { this._isRecurring = isRecurring; }
+	set daily(daily) { this._daily = daily }
+	set weekly(weekly) { this._weekly = weekly }
+	set monthly(monthly) { this._monthly = monthly }
+	set yearly(yearly) { this._yearly = yearly }
 
 	/* Add a column to the list of selected columns
 	 *

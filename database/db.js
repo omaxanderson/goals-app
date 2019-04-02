@@ -34,6 +34,7 @@ export default class Db {
 			.map(value => (typeof value !== 'number' ? `'${value}'` : value))
 			.join(', '));
 		const sql = `INSERT ${ignore ? 'IGNORE ' : ''}INTO ${table} (${columns}) VALUES (${data})`;
+		console.log(sql);
 		return this.query(sql);
 	}
 }

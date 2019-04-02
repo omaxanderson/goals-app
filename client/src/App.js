@@ -17,6 +17,11 @@ class App extends React.Component {
 				description: 'test description',
 				startDate: '2019-04-01',
 				endDate: '2019-05-01',
+				isRecurring: 1,
+				daily: 0,
+				weekly: 3,
+				monthly: 12,
+				yearly: 1,
 			}),
 			headers: {
 				'Content-Type': 'application/json',

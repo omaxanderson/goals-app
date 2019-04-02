@@ -18,11 +18,16 @@ export default class Model {
 		this._query.from(table);
 	}
 
+	addJoin = (sql) => {
+		this._query.addJoin(sql);
+	}
+
 	execute = async () => {
 		return await this._query.execute();
 	}
 
 	fetchOne = async () => {
+		console.log(this._query._sql);
 		const data = await this._query.execute();
 		return data[0];
 	}

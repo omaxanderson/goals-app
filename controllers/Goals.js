@@ -23,9 +23,14 @@ export const create = async (data) => {
 	const goal = new Goals();
 	goal.title = data.title;
 	goal.description = data.description;
+	goal.goalReached = data.goalReached;
 	goal.startDate = data.startDate;
 	goal.endDate = data.endDate;
-	goal.goalReached= data.goalReached;
+	goal.isRecurring = data.isRecurring;
+	goal.daily = data.daily;
+	goal.weekly = data.weekly;
+	goal.monthly = data.monthly;
+	goal.yearly = data.yearly;
 	try {
 		return await goal.save();
 	} catch (e) {
