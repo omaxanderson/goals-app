@@ -1,4 +1,5 @@
 import React from 'react';
+import Goals from './Goals';
 
 class App extends React.Component {
 	constructor(props) {
@@ -67,6 +68,7 @@ class App extends React.Component {
 	render() {
 		return (
 			<React.Fragment>
+				<Goals />
 				<h1>App</h1>
 				<button onClick={this.post}>Post</button><br />
 				<button onClick={this.delete}>Delete</button><br />
