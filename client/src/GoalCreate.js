@@ -14,6 +14,7 @@ class GoalCreate extends React.Component {
 		this.state = {
 			goalTitle: '',
 			goalDescription: '',
+			endDateOpen: false,
 		}
 	}
 
@@ -38,6 +39,10 @@ class GoalCreate extends React.Component {
 								size='col s3'
 								label='Start Date'
 							/>
+							<DatePicker 
+								size='col s3'
+								label='End Date'
+							/>
 						</Row>
 						<Row>
 							<TextArea 
@@ -46,29 +51,16 @@ class GoalCreate extends React.Component {
 								onChange={ (e) => this.setState({ goalDescription: e.target.value}) }
 							/>
 						</Row>
-						<Row>
-							<div className='date-picker-collapsible'>
-								<Collapsible size='col s6' id='endDateCollapse'>
-									<li>
-										<CollapsibleHeader>
-											<label>
-												<input onClick={() => {
-													M.Collapsible.getInstance(document.querySelector('#endDateCollapse')).open(0);
-												}} type='checkbox' /><span>Set End Date</span>
-											</label>
-										</CollapsibleHeader>
-										<CollapsibleBody>
-											<DatePicker 
-												size='col s3' 
-												label='End Date' 
-												size=''
-											/>
-										</CollapsibleBody>
-									</li>
-								</Collapsible>
-							</div>
-						</Row>
 					</form>
+					<Row>
+						<a style={{marginRight: '1em'}} className='btn-floating btn-large waves-effect day-of-week-button'>Su</a>
+						<a style={{marginRight: '1em'}} className='btn-floating btn-large waves-effect day-of-week-button'>M</a>
+						<a style={{marginRight: '1em'}} className='btn-floating btn-large waves-effect day-of-week-button'>T</a>
+						<a style={{marginRight: '1em'}} className='btn-floating btn-large waves-effect day-of-week-button'>W</a>
+						<a style={{marginRight: '1em'}} className='btn-floating btn-large waves-effect day-of-week-button'>Th</a>
+						<a style={{marginRight: '1em'}} className='btn-floating btn-large waves-effect day-of-week-button'>F</a>
+						<a style={{marginRight: '1em'}} className='btn-floating btn-large waves-effect day-of-week-button'>S</a>
+					</Row>
 				</div>
 			</div>
 		);

@@ -16,6 +16,9 @@ export default class DatePicker extends React.Component {
 	render() {
 		return(
 			<div className={`input-field ${this.props.size}`}>
+				{this.props.showIcon && 
+					<i className='material-icons prefix'>date_range</i>
+				}
 				<input type='text' className='datepicker' id={this.props.label} />
 				<label htmlFor={this.props.label}>{this.props.label}</label>
 			</div>
@@ -25,4 +28,5 @@ export default class DatePicker extends React.Component {
 
 DatePicker.defaultProps = {
 	size: 'col s12',
+	showIcon: true,
 }
