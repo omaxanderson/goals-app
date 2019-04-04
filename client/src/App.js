@@ -69,11 +69,6 @@ class App extends React.Component {
 		return (
 			<React.Fragment>
 				<Goals />
-				<h1>App</h1>
-				<button onClick={this.post}>Post</button><br />
-				<button onClick={this.delete}>Delete</button><br />
-				<button onClick={() => this.put()}>Put</button><br />
-				<input onChange={() => this.updateId()} type='text' id='idField' /><br />
 			</React.Fragment>
 		)
 	}
