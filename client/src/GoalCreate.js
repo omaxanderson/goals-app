@@ -25,6 +25,7 @@ class GoalCreate extends React.Component {
 				{ label: 'F', selected: false },
 				{ label: 'S', selected: false },
 			],
+			scheduleType: 'weekdays',
 		}
 	}
 
@@ -69,6 +70,57 @@ class GoalCreate extends React.Component {
 								this.setState({ weekdays });
 							}}
 						/>
+					</Row>
+					<Row>
+						<form onChange={e => console.log(e) } >
+							<p>
+								<label htmlFor='radio-weekdays'>
+									<input id='radio-weekdays' 
+										name='scheduleOption' 
+										type='radio' 
+										defaultChecked={ this.state.scheduleType === 'weekdays' }
+										onChange={() => this.setState({ scheduleType: 'weekdays' }) }
+									/>
+									<span>Weekdays</span>
+								</label>
+							</p>
+							<p>
+								<label htmlFor='radio-custom'>
+									<input 
+										id='radio-custom' 
+										name='scheduleOption' 
+										type='radio' 
+										defaultChecked={ this.state.scheduleType === 'custom' }
+										onChange={() => this.setState({ scheduleType: 'custom' }) }
+									/>
+									<span>Custom</span>
+								</label>
+							</p>
+							<p>
+								<label htmlFor='radio-daily'>
+									<input 
+										id='radio-daily' 
+										name='scheduleOption' 
+										type='radio' 
+										defaultChecked={ this.state.scheduleType === 'daily' }
+										onChange={() => this.setState({ scheduleType: 'daily' }) }
+									/>
+									<span>Daily</span>
+								</label>
+							</p>
+							<p>
+								<label htmlFor='radio-weekly'>
+									<input 
+										id='radio-weekly' 
+										name='scheduleOption' 
+										type='radio' 
+										defaultChecked={ this.state.scheduleType === 'weekly' }
+										onChange={() => this.setState({ scheduleType: 'weekly' }) }
+									/>
+									<span>Weekly</span>
+								</label>
+							</p>
+						</form>
 					</Row>
 				</div>
 			</div>

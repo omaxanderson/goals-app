@@ -1,5 +1,7 @@
 import React from 'react';
 import Goals from './Goals';
+import { Provider } from 'react-redux';
+import store from './store';
 
 class App extends React.Component {
 	constructor(props) {
@@ -67,9 +69,9 @@ class App extends React.Component {
 
 	render() {
 		return (
-			<React.Fragment>
+			<Provider store={store}>
 				<Goals />
-			</React.Fragment>
+			</Provider>
 		)
 	}
 }

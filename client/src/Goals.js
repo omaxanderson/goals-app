@@ -1,11 +1,20 @@
 import React from 'react';
 import GoalCreate from './GoalCreate';
+import { connect } from 'react-redux';
 import 'materialize-css/dist/css/materialize.min.css';
 import M from 'materialize-css';
 
 class Goals extends React.Component {
 	componentDidMount() {
 		M.Tabs.init(document.querySelector('.tabs'), {});
+	}
+
+	dispatchTest = () => {
+		console.log('dispatching');
+		this.props.dispatch({
+			type: 'GOALS_TEST',
+			payload: { hello: 'world' },
+		});
 	}
 
 	render() {
@@ -20,6 +29,7 @@ class Goals extends React.Component {
 				<div id='createGoal'>
 					<h1 style={{ marginTop: '0px'}} >App</h1>
 					<button onClick={this.post}>Post</button><br />
+					<button onClick={this.dispatchTest}>Dispatch Test</button><br />
 					<button onClick={this.delete}>Delete</button><br />
 					<button onClick={() => this.put()}>Put</button><br />
 					<input onChange={() => this.updateId()} type='text' id='idField' /><br />
@@ -33,4 +43,6 @@ class Goals extends React.Component {
 	}
 }
 
-export default Goals;
+export default connect(state => ({
+
+}))(Goals);

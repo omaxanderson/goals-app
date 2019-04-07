@@ -35,6 +35,7 @@ export default class WeekdaySelector extends React.Component {
 			return (
 				<a 
 					style={{marginRight: '1em'}} 
+					key={ `${day.label}-button` }
 					className={`btn-floating btn-large waves-effect day-of-week-button ${day.selected ? '' : 'grey'}`}
 					data-value={day.label}
 					onClick={ (e) => this.handleClick(e) }
