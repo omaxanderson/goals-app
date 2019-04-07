@@ -4,6 +4,7 @@ import TextArea from './components/TextArea';
 import Row from './components/Row';
 import DatePicker from './components/DatePicker';
 import Collapsible, { CollapsibleHeader, CollapsibleBody } from './components/Collapsible';
+import WeekdaySelector from './components/WeekdaySelector';
 import 'materialize-css/dist/css/materialize.min.css';
 import M from 'materialize-css';
 
@@ -15,6 +16,15 @@ class GoalCreate extends React.Component {
 			goalTitle: '',
 			goalDescription: '',
 			endDateOpen: false,
+			weekdays: [
+				{ label: 'SU', selected: false },
+				{ label: 'M', selected: false },
+				{ label: 'T', selected: false },
+				{ label: 'W', selected: false },
+				{ label: 'TH', selected: false },
+				{ label: 'F', selected: false },
+				{ label: 'S', selected: false },
+			],
 		}
 	}
 
@@ -53,13 +63,12 @@ class GoalCreate extends React.Component {
 						</Row>
 					</form>
 					<Row>
-						<a style={{marginRight: '1em'}} className='btn-floating btn-large waves-effect day-of-week-button'>Su</a>
-						<a style={{marginRight: '1em'}} className='btn-floating btn-large waves-effect day-of-week-button'>M</a>
-						<a style={{marginRight: '1em'}} className='btn-floating btn-large waves-effect day-of-week-button'>T</a>
-						<a style={{marginRight: '1em'}} className='btn-floating btn-large waves-effect day-of-week-button'>W</a>
-						<a style={{marginRight: '1em'}} className='btn-floating btn-large waves-effect day-of-week-button'>Th</a>
-						<a style={{marginRight: '1em'}} className='btn-floating btn-large waves-effect day-of-week-button'>F</a>
-						<a style={{marginRight: '1em'}} className='btn-floating btn-large waves-effect day-of-week-button'>S</a>
+						{ /* What's the best way to handle this? Should the state be handled here? */ }
+						<WeekdaySelector 
+							onChange={(weekdays) => {
+								this.setState({ weekdays });
+							}}
+						/>
 					</Row>
 				</div>
 			</div>
