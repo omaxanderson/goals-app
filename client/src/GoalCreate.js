@@ -5,6 +5,8 @@ import Row from './components/Row';
 import DatePicker from './components/DatePicker';
 import Collapsible, { CollapsibleHeader, CollapsibleBody } from './components/Collapsible';
 import WeekdaySelector from './components/WeekdaySelector';
+import ScheduleSelector from './components/ScheduleSelector';
+import CustomScheduler from './components/CustomScheduler';
 import 'materialize-css/dist/css/materialize.min.css';
 import M from 'materialize-css';
 
@@ -63,64 +65,31 @@ class GoalCreate extends React.Component {
 							/>
 						</Row>
 					</form>
+					{ /* this is kind of wonky... */ }
+					<div style={ ['weekdays', 'custom'].includes(this.state.scheduleType) ? { marginBottom: '0px' } : {}} className='row'>
+						<div style={ ['weekdays', 'custom'].includes(this.state.scheduleType) ? { marginBottom: '0px' } : {}}>
+							<ScheduleSelector 
+								defaultChecked='weekdays'
+								onChange={ (e) => this.setState({ scheduleType: e }) }
+							/>
+						</div>
+					</div>
 					<Row>
-						{ /* What's the best way to handle this? Should the state be handled here? */ }
-						<WeekdaySelector 
-							onChange={(weekdays) => {
-								this.setState({ weekdays });
-							}}
-						/>
-					</Row>
-					<Row>
-						<form onChange={e => console.log(e) } >
-							<p>
-								<label htmlFor='radio-weekdays'>
-									<input id='radio-weekdays' 
-										name='scheduleOption' 
-										type='radio' 
-										defaultChecked={ this.state.scheduleType === 'weekdays' }
-										onChange={() => this.setState({ scheduleType: 'weekdays' }) }
-									/>
-									<span>Weekdays</span>
-								</label>
-							</p>
-							<p>
-								<label htmlFor='radio-custom'>
-									<input 
-										id='radio-custom' 
-										name='scheduleOption' 
-										type='radio' 
-										defaultChecked={ this.state.scheduleType === 'custom' }
-										onChange={() => this.setState({ scheduleType: 'custom' }) }
-									/>
-									<span>Custom</span>
-								</label>
-							</p>
-							<p>
-								<label htmlFor='radio-daily'>
-									<input 
-										id='radio-daily' 
-										name='scheduleOption' 
-										type='radio' 
-										defaultChecked={ this.state.scheduleType === 'daily' }
-										onChange={() => this.setState({ scheduleType: 'daily' }) }
-									/>
-									<span>Daily</span>
-								</label>
-							</p>
-							<p>
-								<label htmlFor='radio-weekly'>
-									<input 
-										id='radio-weekly' 
-										name='scheduleOption' 
-										type='radio' 
-										defaultChecked={ this.state.scheduleType === 'weekly' }
-										onChange={() => this.setState({ scheduleType: 'weekly' }) }
-									/>
-									<span>Weekly</span>
-								</label>
-							</p>
-						</form>
+						{ this.state.scheduleType === 'weekdays' &&
+							<WeekdaySelector 
+								onChange={(weekdays) => {
+									this.setState({ weekdays });
+								}}
+							/>
+						}
+						{ this.state.scheduleType === 'custom' &&
+							<CustomScheduler 
+								onChange={ (e) => {
+									console.log(e.target.dataset.type);
+									console.log(e.target.value);
+								}}
+							/>
+						}
 					</Row>
 				</div>
 			</div>

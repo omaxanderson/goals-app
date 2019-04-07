@@ -34,7 +34,7 @@ export default class WeekdaySelector extends React.Component {
 		const body = this.state.weekdays.map(day => {
 			return (
 				<a 
-					style={{marginRight: '1em'}} 
+					style={{marginRight: '1vw'}} 
 					key={ `${day.label}-button` }
 					className={`btn-floating btn-large waves-effect day-of-week-button ${day.selected ? '' : 'grey'}`}
 					data-value={day.label}
