@@ -28,6 +28,11 @@ class GoalCreate extends React.Component {
 				{ label: 'S', selected: false },
 			],
 			scheduleType: 'weekdays',
+			customSchedule: {
+				amount: 0,
+				amountType: 'minutes',
+				perType: 'days',
+			}
 		}
 	}
 
@@ -45,16 +50,12 @@ class GoalCreate extends React.Component {
 						<Row>
 							<TextField 
 								label='Title'
-								size='col s6'
+								size='col s9'
 								onChange={ (e) => this.setState({ goalTitle: e.target.value}) }
 							/>
 							<DatePicker 
 								size='col s3'
 								label='Start Date'
-							/>
-							<DatePicker 
-								size='col s3'
-								label='End Date'
 							/>
 						</Row>
 						<Row>
@@ -66,8 +67,8 @@ class GoalCreate extends React.Component {
 						</Row>
 					</form>
 					{ /* this is kind of wonky... */ }
-					<div style={ ['weekdays', 'custom'].includes(this.state.scheduleType) ? { marginBottom: '0px' } : {}} className='row'>
-						<div style={ ['weekdays', 'custom'].includes(this.state.scheduleType) ? { marginBottom: '0px' } : {}}>
+					<div style={ this.state.scheduleType === 'custom' ? { marginBottom: '0px' } : {}} className='row'>
+						<div style={ this.state.scheduleType === 'custom' ? { marginBottom: '0px' } : {}}>
 							<ScheduleSelector 
 								defaultChecked='weekdays'
 								onChange={ (e) => this.setState({ scheduleType: e }) }
@@ -84,16 +85,48 @@ class GoalCreate extends React.Component {
 						}
 						{ this.state.scheduleType === 'custom' &&
 							<CustomScheduler 
-								onChange={ (e) => {
-									console.log(e.target.dataset.type);
-									console.log(e.target.value);
-								}}
+								onChange={ (e) => this.onCustomScheduleChange(e) }
 							/>
 						}
+						{ this.state.scheduleType === 'endDate' &&
+							<DatePicker 
+								size='col s4'
+								label='End Date'
+							/>
+						}
+					</Row>
+					<Row>
+						<form>
+							<button onClick={ this.onSubmit } className='btn waves-effect waves-light' type='submit'>
+								Submit
+								<i className='material-icons right'>send</i>
+							</button>
+						</form>
 					</Row>
 				</div>
 			</div>
 		);
+	}
+
+	onCustomScheduleChange = (e) => {
+		const customSchedule = Object.assign(this.state.customSchedule);
+		switch (e.target.dataset.type) {
+			case 'text':
+				customSchedule.amount = e.target.value;
+				break;
+			case 'amountType':
+				customSchedule.amountType = e.target.value;
+				break;
+			case 'perType':
+				customSchedule.perType = e.target.value;
+				break;
+		}
+		this.setState({ customSchedule });
+	}
+
+	onSubmit = (e) => {
+		console.log('submitting');
+		e.preventDefault();
 	}
 
 }

@@ -42,6 +42,10 @@ export default class WeekdaySelector extends React.Component {
 				>{day.label}</a>
 			);
 		});
-		return body;
+		return (
+			<div style={{ marginTop: '26px', marginBottom: '21px' }} >
+				{ body }
+			</div>
+		);
 	}
 }

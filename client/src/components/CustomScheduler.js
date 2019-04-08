@@ -8,7 +8,7 @@ export default class CustomScheduler extends Component {
 		super(props);
 
 		this.state = {
-			amount: '1',
+			amount: '0',
 			amountType: 1,
 			perType: 3,
 		};
@@ -25,7 +25,6 @@ export default class CustomScheduler extends Component {
 						data-type='amount'
 						onChange={ (e) => {
 							this.setState({ amount: e.target.value });
-							console.log('amount changed', e.target.value);
 							this.props.onChange(e);
 						}}
 					/>

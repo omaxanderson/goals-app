@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import 'materialize-css/dist/css/materialize.min.css';
 import M from 'materialize-css';
 
@@ -10,7 +11,12 @@ export default class DatePicker extends React.Component {
 	componentDidMount() {
 		// As a note for now, settings on one DatePicker will adjust settings on all other pickers
 		// 	That's a problem for another day though...
-		M.Datepicker.init(document.querySelectorAll('.datepicker'), {...this.props});
+		//
+		const options = {
+			defaultDate: new Date(),
+			setDefaultDate: true,
+		}
+		M.Datepicker.init(document.querySelectorAll('.datepicker'), options);
 	}
 
 	render() {

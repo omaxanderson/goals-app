@@ -5,7 +5,7 @@ export default class ScheduleSelector extends React.Component {
 	render() {
 		return (
 			<form onChange={e => console.log(e) } >
-				<p>
+				<div style={{ display: 'inline', marginRight: '30px' }}>
 					<label htmlFor='radio-end-date'>
 						<input id='radio-end-date' 
 							name='scheduleOption' 
@@ -15,8 +15,8 @@ export default class ScheduleSelector extends React.Component {
 						/>
 						<span>End Date</span>
 					</label>
-				</p>
-				<p>
+				</div>
+				<div style={{ display: 'inline', marginRight: '30px' }}>
 					<label htmlFor='radio-weekdays'>
 						<input id='radio-weekdays' 
 							name='scheduleOption' 
@@ -26,8 +26,8 @@ export default class ScheduleSelector extends React.Component {
 						/>
 						<span>Weekdays</span>
 					</label>
-				</p>
-				<p>
+				</div>
+				<div style={{ display: 'inline', marginRight: '30px' }}>
 					<label htmlFor='radio-daily'>
 						<input 
 							id='radio-daily' 
@@ -38,8 +38,8 @@ export default class ScheduleSelector extends React.Component {
 						/>
 						<span>Daily</span>
 					</label>
-				</p>
-				<p>
+				</div>
+				<div style={{ display: 'inline', marginRight: '30px' }}>
 					<label htmlFor='radio-weekly'>
 						<input 
 							id='radio-weekly' 
@@ -50,8 +50,8 @@ export default class ScheduleSelector extends React.Component {
 						/>
 						<span>Weekly</span>
 					</label>
-				</p>
-				<p>
+				</div>
+				<div style={{ display: 'inline', marginRight: '30px' }}>
 					<label htmlFor='radio-custom'>
 						<input 
 							id='radio-custom' 
@@ -62,7 +62,7 @@ export default class ScheduleSelector extends React.Component {
 						/>
 						<span>Custom</span>
 					</label>
-				</p>
+				</div>
 			</form>
 
 		);
