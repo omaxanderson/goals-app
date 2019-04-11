@@ -1,4 +1,6 @@
 import React from 'react';
+import moment from 'moment'
+import { connect } from 'react-redux';
 import TextField from './components/TextField';
 import TextArea from './components/TextArea';
 import Row from './components/Row';
@@ -17,7 +19,8 @@ class GoalCreate extends React.Component {
 		this.state = {
 			goalTitle: '',
 			goalDescription: '',
-			endDateOpen: false,
+			startDate: moment().format('YYYY-MM-DD'),
+			endDate: null,
 			weekdays: [
 				{ label: 'SU', selected: false },
 				{ label: 'M', selected: false },
@@ -41,7 +44,6 @@ class GoalCreate extends React.Component {
 	}
 
 	render() {
-		const curDate = new Date('2019-06-03');
 		return (
 			<div className='container'>
 				<h4>Goal Create form</h4>
@@ -56,6 +58,7 @@ class GoalCreate extends React.Component {
 							<DatePicker 
 								size='col s3'
 								label='Start Date'
+								onChange={ (date) => this.setState({ startDate: moment(date).format('YYYY-MM-DD') }) } 
 							/>
 						</Row>
 						<Row>
@@ -92,6 +95,8 @@ class GoalCreate extends React.Component {
 							<DatePicker 
 								size='col s4'
 								label='End Date'
+								onChange={(date) => this.setState({ endDate: moment(date).format('YYYY-MM-DD') }) }
+								id='end-date-picker'
 							/>
 						}
 					</Row>
@@ -121,14 +126,40 @@ class GoalCreate extends React.Component {
 				customSchedule.perType = e.target.value;
 				break;
 		}
+		this.props.dispatch({
+
+		});
 		this.setState({ customSchedule });
 	}
 
 	onSubmit = (e) => {
+		const goal = {
+			title: this.state.title,
+			startDate: this.state.startDate,
+			description: this.state.description,
+			scheduleType: this.state.scheduleType,
+		}
+		if (goal.scheduleType === 'endDate') {
+			goal.endDate = this.state.endDate;
+		} else if (goal.scheduleType === 'weekdays') {
+			goal.weekdays = this.state.weekdays
+				.filter(day => day.selected)
+				.join(',');
+		} else if (goal.scheduleType === 'daily') {
+			goal.daily = true;
+		} else if (goal.scheduleType === 'weekly') {
+			goal.weekly = true;
+		} else if (goal.scheduleType === 'custom') {
+			goal.customSchedule = this.state.customSchedule;
+		}
+
 		console.log('submitting');
+		console.log(goal);
 		e.preventDefault();
 	}
 
 }
 
-export default GoalCreate;
+export default connect((state) => ({
+
+}))(GoalCreate);
