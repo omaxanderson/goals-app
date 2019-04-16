@@ -1,5 +1,6 @@
 import QueryBuilder from '../database/QueryBuilder';
 import Goals from '../models/Goals';
+import { get } from 'lodash';
 
 export const getAll = async (userId, params) => {
 	const model = new Goals();
@@ -19,18 +20,18 @@ export const getAll = async (userId, params) => {
 }
 
 export const create = async (data) => {
-	console.log(data);
 	const goal = new Goals();
 	goal.title = data.title;
 	goal.description = data.description;
-	goal.goalReached = data.goalReached;
+	goal.scheduleType = data.scheduleType;
 	goal.startDate = data.startDate;
+
+	goal.weekdays = data.weekdays;
 	goal.endDate = data.endDate;
-	goal.isRecurring = data.isRecurring;
-	goal.daily = data.daily;
-	goal.weekly = data.weekly;
-	goal.monthly = data.monthly;
-	goal.yearly = data.yearly;
+	goal.amount = get(data, 'customSchedule.amount', null);
+	goal.amountType = get(data, 'customSchedule.amountType', null);
+	goal.perType = get(data, 'customSchedule.perType', null);
+
 	try {
 		return await goal.save();
 	} catch (e) {
