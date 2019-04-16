@@ -16,6 +16,8 @@ class Goals extends Model {
 		this._startDate = null;
 		this._endDate = null;
 		this._isRecurring = null;
+		this._scheduleType = null;
+		this._weekdays = [];
 		this._daily = null;
 		this._weekly = null;
 		this._monthly = null;
@@ -104,17 +106,31 @@ class Goals extends Model {
 					title: 			this._title,
 					description: 	this._description,
 					goal_reached: 	this._goalReached,
+					start_date: 	this._startDate,
 					user_id: 		1	// Hard coding this since not planning on adding other users yet
 				});
+
+				const weekdayList = this._weekdays && this._weekdays.split(',');
+				const weekdays = this._scheduleType === 'weekdays' ? {
+						sunday: Number(weekdayList.includes('SU')),
+						monday: Number(weekdayList.includes('M')),
+						tuesday: Number(weekdayList.includes('T')),
+						wednesday: Number(weekdayList.includes('W')),
+						thursday: Number(weekdayList.includes('TH')),
+						friday: Number(weekdayList.includes('F')),
+						saturday: Number(weekdayList.includes('S')),
+					}
+					: {};
+				console.log(weekdays);
+
 				const scheduleInsert = await Db.insert('goal_schedule', {
 					goal_id: goalsInsert.insertId,
-					start_date: this._startDate,
 					end_date: this._endDate,
-					is_recurring: this._isRecurring,
-					daily: this._daily,
-					weekly: this._weekly,
-					monthly: this._monthly,
-					yearly: this._yearly
+					schedule_type: this._scheduleType,
+					...weekdays,
+					custom_amount: this._amount,
+					custom_amount_type: this._amountType,
+					custom_per_type: this._perType,
 				});
 
 				return { 
@@ -122,6 +138,8 @@ class Goals extends Model {
 					scheduleInsert,
 				}
 			} catch (e) {
+				console.log('whoops');
+				console.log(e);
 				throw e;
 			}
 		}
@@ -150,11 +168,12 @@ class Goals extends Model {
 	set goalReached(goalReached) { this._goalReached = goalReached; }
 	set columns(columns) { this._columns = columns; }
 	set userId(id) { this.addWhere(`user_id = ${id}`); }
-	set isRecurring(isRecurring) { this._isRecurring = isRecurring; }
-	set daily(daily) { this._daily = daily }
-	set weekly(weekly) { this._weekly = weekly }
-	set monthly(monthly) { this._monthly = monthly }
-	set yearly(yearly) { this._yearly = yearly }
+	set scheduleType(type) { this._scheduleType = type; }
+	set weekdays(weekdays) { this._weekdays = weekdays; }
+	set amount(amount) { this._amount = amount; }
+	set amountType(amountType) { this._amountType = amountType; }
+	set perType(perType) { this._perType = perType; }
+
 
 	/* Add a column to the list of selected columns
 	 *
