@@ -36,7 +36,7 @@ export default class DatePicker extends React.Component {
 	}
 
 	componentWillMount() {
-		this.generateId = shortid.generate();
+		this.generateId = `a${shortid.generate()}`;
 	}
 
 	render() {

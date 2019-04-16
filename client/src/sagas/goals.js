@@ -9,7 +9,6 @@ function* createGoal(action) {
 			},
 			body: JSON.stringify(action.payload),
 		});
-
 	} catch (e) {
 		yield put({
 			type: 'ERROR_CREATE_GOAL',

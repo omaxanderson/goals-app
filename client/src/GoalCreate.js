@@ -126,17 +126,19 @@ class GoalCreate extends React.Component {
 				customSchedule.perType = e.target.value;
 				break;
 		}
+		/*
 		this.props.dispatch({
 
 		});
+		*/
 		this.setState({ customSchedule });
 	}
 
 	onSubmit = (e) => {
 		const goal = {
-			title: this.state.title,
+			title: this.state.goalTitle,
 			startDate: this.state.startDate,
-			description: this.state.description,
+			description: this.state.goalDescription,
 			scheduleType: this.state.scheduleType,
 		}
 		if (goal.scheduleType === 'endDate') {
@@ -144,6 +146,7 @@ class GoalCreate extends React.Component {
 		} else if (goal.scheduleType === 'weekdays') {
 			goal.weekdays = this.state.weekdays
 				.filter(day => day.selected)
+				.map(day => day.label)
 				.join(',');
 		} else if (goal.scheduleType === 'daily') {
 			goal.daily = true;
@@ -152,6 +155,11 @@ class GoalCreate extends React.Component {
 		} else if (goal.scheduleType === 'custom') {
 			goal.customSchedule = this.state.customSchedule;
 		}
+
+		this.props.dispatch({
+			type: 'CREATE_GOAL',
+			payload: goal,
+		});
 
 		console.log('submitting');
 		console.log(goal);
