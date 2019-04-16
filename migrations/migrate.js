@@ -35,6 +35,7 @@ const getMigrationsToRun = async () => {
 
 // Helper function to run the actual migration
 const performMigration = async migration => {
+	console.log('performing', migration);
 	return new Promise(async (resolve, reject) => {
 		const migrationSql = require(`./files/${migration}`).default;
 		if (migrationSql !== 'QUERY') {

@@ -1,0 +1,2 @@
+export default `ALTER TABLE goals
+	ADD COLUMN start_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP`;
