@@ -5,8 +5,8 @@ const fs = require('fs');
 const path = require('path');
 
 if (process.argv.length < 3) {
-	console.log('Error: no filename supplied');
-	throw new Error('Error: no filename supplied');
+   console.log('Error: no filename supplied');
+   throw new Error('Error: no filename supplied');
 }
 
 
