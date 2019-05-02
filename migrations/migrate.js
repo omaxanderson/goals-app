@@ -52,13 +52,19 @@ const performMigration = async migration => {
             console.log(e);
             reject(e);
          }
+      } else {
+         reject('Empty migration...skipping.');
       }
    });
 }
 
 const runAllMigrations = async (migrationsNotRun) => {
    for (const filename of migrationsNotRun) {
-      await performMigration(filename);
+      try {
+         await performMigration(filename);
+      } catch (e) {
+         console.log(e);
+      }
    }
 }
 
