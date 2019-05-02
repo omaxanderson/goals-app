@@ -1,12 +1,32 @@
 .date-picker-collapsible > ul > li > .collapsible-body {
-	padding-top: 0px;
-	padding-bottom: 0px;
+   padding-top: 0px;
+   padding-bottom: 0px;
 }
 
 .day-of-week-button {
-	text-align: center;
+   text-align: center;
 }
 
 .test {
-	text-align: center;
+   text-align: center;
+}
+
+.loader {
+   z-index: 100000;
+   position: fixed;
+   left: 50%;
+   top: 50%;
+   height: 100px;
+   width: 100px;
+   transform: translate(-50%, -50%);
+}
+
+.loader-background {
+   position: fixed;
+   height: 100%;
+   width: 100%;
+   left: 0;
+   top: 0;
+   z-index: 99999;
+   background: rgba( 51, 51, 51, 0.7);
 }
