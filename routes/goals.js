@@ -2,7 +2,7 @@ import express from 'express';
 import * as GoalsController from '../controllers/Goals';
 const router = express.Router();
 
-// GET a list of goals 
+// GET a list of goals
 router.get('/', async (req, res, next) => {
    const params = {};
    try {
@@ -15,7 +15,7 @@ router.get('/', async (req, res, next) => {
    }
 });
 
-// GET a specific goal 
+// GET a specific goal
 router.get('/:goalId', async (req, res, next) => {
    res.send(JSON.stringify({
       from: 'goals.js',
@@ -34,12 +34,6 @@ router.post('/', async (req, res, next) => {
       res.status(400);
       res.send(e);
    }
-   /*
-   res.send(JSON.stringify({
-      from: 'goals.js',
-      method: 'post',
-   }));
-   */
 });
 
 // PUT create a new goal
