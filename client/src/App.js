@@ -1,78 +1,52 @@
 import React from 'react';
 import Goals from './Goals';
+import GoalCreate from './GoalCreate';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store';
 
 class App extends React.Component {
+   render() {
+      return (
+         <Provider store={store}>
+            <Router>
+               <Switch>
+                  <Route exact path='/' component={Goals} />
+                  <Route path='/create' component={GoalCreate} />
+                  <Route path='*' component={FourOhFour} />
+               </Switch>
+            </Router>
+         </Provider>
+      )
+   }
+}
+
+class FourOhFour extends React.Component {
    constructor(props) {
       super(props);
 
       this.state = {
-         id: 0,
-      }
+         imageUrl: '',
+      };
    }
 
-   post() {
-      fetch('/api/goals', {
-         method: 'POST',
-         body: JSON.stringify({
-            title: 'testing',
-            description: 'test description',
-            startDate: '2019-04-01',
-            endDate: '2019-05-01',
-            isRecurring: 1,
-            daily: 0,
-            weekly: 3,
-            monthly: 12,
-            yearly: 1,
-         }),
-         headers: {
-            'Content-Type': 'application/json',
-         },
-      })
-         .then(res => res.json)
-         .then(data => {
-            console.log(data);
-         });
-
-   }
-   put = (id) => {
-      fetch('/api/goals/' + this.state.id, {
-         method: 'PUT',
-         body: JSON.stringify({
-            title: 'title update',
-            endDate: '2019-05-02',
-         }),
-         headers: {
-            'Content-Type': 'application/json',
-         },
-      })
-         .then(res => res.json)
-         .then(data => {
-            console.log(data);
-         });
-   }
-
-   delete = () => {
-      fetch('/api/goals/' + this.state.id, {
-         method: 'DELETE',
-      })
-         .then(res => res.json)
-         .then(data => {
-            console.log(data);
-         });
-   }
-
-   updateId = (e) => {
-      this.setState({id: document.querySelector('#idField').value });
+   componentDidMount() {
+      fetch('https://dog.ceo/api/breeds/image/random')
+      .then(res => res.json())
+      .then(data => {
+         console.log(data);
+         this.setState({ imageUrl: data.message });
+      });
    }
 
    render() {
       return (
-         <Provider store={store}>
-            <Goals />
-         </Provider>
-      )
+         <div>
+            <h3>404 Bruh wrong path</h3>
+            <p>But here's a random pic of a dog</p>
+            <img src={this.state.imageUrl || ''} alt='random dog' />
+         </div>
+      );
    }
 }
 

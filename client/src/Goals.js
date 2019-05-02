@@ -1,42 +1,67 @@
 import React from 'react';
 import GoalCreate from './GoalCreate';
 import { connect } from 'react-redux';
-import 'materialize-css/dist/css/materialize.min.css';
-import M from 'materialize-css';
+import shortid from 'shortid';
 
 class Goals extends React.Component {
-   componentDidMount() {
-      M.Tabs.init(document.querySelector('.tabs'), {});
+   constructor(props) {
+      super(props);
+
+      this.state = {
+         goals: [],
+      };
+   }
+   async componentDidMount() {
+      const result = await fetch('/api/goals');
+      const data = await result.json();
+      this.setState({ goals: data.results });
+      console.log(data);
+
    }
 
-   dispatchTest = () => {
-      console.log('dispatching');
-      this.props.dispatch({
-         type: 'GOALS_TEST',
-         payload: { hello: 'world' },
-      });
+   getWeeklyGoals = () => {
+      return this.state.goals.filter(goal => goal.schedule_type === 'weekly');
+   }
+
+   getWeekdaysGoals = () => {
+      return this.state.goals.filter(goal => goal.schedule_type === 'weekdays');
+   }
+
+   getEndDateGoals = () => {
+      return this.state.goals.filter(goal => goal.schedule_type === 'endDate');
+   }
+
+   getDailyGoals = () => {
+      return this.state.goals.filter(goal => goal.schedule_type === 'daily');
+   }
+
+   getCustomScheduleGoals = () => {
+      return this.state.goals.filter(goal => goal.schedule_type === 'custom');
    }
 
    render() {
       return (
-         <div className='row'>
-            <div className='col s12'>
-               <ul className='tabs'>
-                  <li className='tab col s4'><a href='#createGoal'>Create</a></li>
-                  <li className='tab col s4'><a href='#goals'>Goals</a></li>
-               </ul>
+         <div className='container'>
+            <a href='/create' className='btn'>Create</a>
+            <div className='row'>
+               <h2>Weekly</h2>
+               {this.getWeeklyGoals().map(goal => <p key={shortid.generate()}>goal: {goal.title}</p>)}
             </div>
-            <div id='createGoal'>
-               <h1 style={{ marginTop: '0px'}} >App</h1>
-               <button onClick={this.post}>Post</button><br />
-               <button onClick={this.dispatchTest}>Dispatch Test</button><br />
-               <button onClick={this.delete}>Delete</button><br />
-               <button onClick={() => this.put()}>Put</button><br />
-               <input onChange={() => this.updateId()} type='text' id='idField' /><br />
-               </div>
-               <GoalCreate />
-            <div id='goals'>
-               Goals
+            <div className='row'>
+               <h2>Weekdays</h2>
+               {this.getWeekdaysGoals().map(goal => <p key={shortid.generate()}>goal: {goal.title}</p>)}
+            </div>
+            <div className='row'>
+               <h2>End Date</h2>
+               {this.getEndDateGoals().map(goal => <p key={shortid.generate()}>goal: {goal.title}</p>)}
+            </div>
+            <div className='row'>
+               <h2>Daily</h2>
+               {this.getDailyGoals().map(goal => <p key={shortid.generate()}>goal: {goal.title}</p>)}
+            </div>
+            <div className='row'>
+               <h2>Custom</h2>
+               {this.getCustomScheduleGoals().map(goal => <p key={shortid.generate()}>goal: {goal.title}</p>)}
             </div>
          </div>
       );
