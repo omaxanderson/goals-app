@@ -1,9 +1,9 @@
 import express from 'express';
-import { test } from '../controllers/Review';
+import { setCompleted } from '../controllers/Review';
 const router = express.Router();
 
 router.post('/:goalId', async (req, res, next) => {
-   const result = await test(req.params.goalId);
+   const result = await setCompleted(req.params.goalId, req.body.completed);
    console.log(result);
    res.send(result);
 });
