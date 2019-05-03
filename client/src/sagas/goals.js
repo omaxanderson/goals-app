@@ -27,10 +27,49 @@ function* createGoal(action) {
    }
 }
 
+const api = {
+   post: async (path, body) => {
+      try {
+         const result = await fetch(`/api${path}`, {
+            method: 'POST',
+            headers: {
+               'Content-Type': 'application/json',
+            },
+            body: typeof body === 'string'
+               ? body
+               : JSON.stringify(body),
+         });
+         const data = await result.json();
+         return data;
+      } catch (e) {
+         console.log('Error:', e);
+         return e;
+      }
+   }
+};
+
+function* dailyGoalReviewed(action) {
+   try {
+      const result = yield api.post(`/review/${action.payload.goal_id}`, {
+         goal_id: action.payload.goal_id,
+         completed: action.payload.completed,
+      });
+      yield put({
+         type: 'SUCCESS_DAILY_GOAL_REVIEWED',
+      });
+      return result;
+   } catch (e) {
+      yield put({
+         type: 'ERROR_DAILY_GOAL_REVIEWED',
+      });
+   }
+}
+
 export default function* watchGoals() {
    console.log('from watchGoals');
 
    yield all([
       takeEvery('CREATE_GOAL', createGoal),
+      takeEvery('DAILY_GOAL_REVIEWED', dailyGoalReviewed),
    ]);
 }

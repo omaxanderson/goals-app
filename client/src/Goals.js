@@ -1,5 +1,7 @@
 import React from 'react';
 import GoalCreate from './GoalCreate';
+import DailyGoalReview from './components/DailyGoalReview';
+import Checkbox from './components/Checkbox';
 import { connect } from 'react-redux';
 import shortid from 'shortid';
 
@@ -19,49 +21,42 @@ class Goals extends React.Component {
 
    }
 
-   getWeeklyGoals = () => {
-      return this.state.goals.filter(goal => goal.schedule_type === 'weekly');
-   }
-
-   getWeekdaysGoals = () => {
-      return this.state.goals.filter(goal => goal.schedule_type === 'weekdays');
-   }
-
-   getEndDateGoals = () => {
-      return this.state.goals.filter(goal => goal.schedule_type === 'endDate');
-   }
-
-   getDailyGoals = () => {
-      return this.state.goals.filter(goal => goal.schedule_type === 'daily');
-   }
-
-   getCustomScheduleGoals = () => {
-      return this.state.goals.filter(goal => goal.schedule_type === 'custom');
+   getGoalsOfType= (type) => {
+      return this.state.goals.filter(goal => goal.schedule_type === type);
    }
 
    render() {
+      const goalsByType = ['weekly', 'weekdays', 'endDate', 'daily', 'custom']
+         .map(type => {
+            return this.getGoalsOfType(type).map(goal => (
+               <DailyGoalReview goal={goal} />
+               // <p key={shortid.generate()}>goal: {goal.title}</p>)
+            ));
+         });
+      console.log(goalsByType);
+
       return (
          <div className='container'>
             <a href='/create' className='btn'>Create</a>
             <div className='row'>
-               <h2>Weekly</h2>
-               {this.getWeeklyGoals().map(goal => <p key={shortid.generate()}>goal: {goal.title}</p>)}
+               <h2>Daily</h2>
+               {goalsByType[3]}
             </div>
             <div className='row'>
                <h2>Weekdays</h2>
-               {this.getWeekdaysGoals().map(goal => <p key={shortid.generate()}>goal: {goal.title}</p>)}
+               {goalsByType[1]}
             </div>
             <div className='row'>
                <h2>End Date</h2>
-               {this.getEndDateGoals().map(goal => <p key={shortid.generate()}>goal: {goal.title}</p>)}
+               {goalsByType[2]}
             </div>
             <div className='row'>
-               <h2>Daily</h2>
-               {this.getDailyGoals().map(goal => <p key={shortid.generate()}>goal: {goal.title}</p>)}
+               <h2>Weekly</h2>
+               {goalsByType[0]}
             </div>
             <div className='row'>
                <h2>Custom</h2>
-               {this.getCustomScheduleGoals().map(goal => <p key={shortid.generate()}>goal: {goal.title}</p>)}
+               {goalsByType[4]}
             </div>
          </div>
       );
