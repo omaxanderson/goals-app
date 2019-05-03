@@ -14,10 +14,7 @@ export async function test(goalId) {
       WHERE goal_id = ${goalId}`;
    const result = await Db.query(sql);
    const scheduleType = result[0].schedule_type;
-   console.log('schedule type', scheduleType);
-   const table = tables[scheduleType];
-   console.log('table', table);
-   return `schedule type: ${scheduleType}`;
+   return JSON.stringify({hello: 'world'});
 }
 
 export default {nice: 'max'};

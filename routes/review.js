@@ -6,7 +6,6 @@ router.post('/:goalId', async (req, res, next) => {
    const result = await test(req.params.goalId);
    console.log(result);
    res.send(result);
-   // res.send('hello');
 });
 
 router.get('/:goalId', async (req, res, next) => {
