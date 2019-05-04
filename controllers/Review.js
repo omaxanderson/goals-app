@@ -1,6 +1,6 @@
 import Db from '../database/db';
 import moment from 'moment';
-import { getScheduleType } from '../services/Goals';
+import { getScheduleType, getCustomSchedule } from '../services/Goals';
 
 const tables = {
    'weekly': 'weekly_goal_completed',
@@ -40,6 +40,34 @@ async function setEndDateComplete(goalId, completed) {
    return result;
 }
 
+async function setCustomComplete(goalId, completed) {
+   const customDetails = await getCustomSchedule(goalId);
+   const { custom_per_type } = customDetails;
+   let column, value;
+   switch (custom_per_type) {
+      case 'month':
+         column = 'month';
+         value = moment().month();
+         break;
+      case 'week':
+         column = 'week';
+         value = moment().week();
+         break;
+      case 'day':
+         column = 'date';
+         value = moment().format('YYYY-MM-DD');
+         break;
+      default:
+   }
+
+   const sql = Db.format(`REPLACE INTO custom_goal_completed
+      (goal_id, ??, year, completed)
+      VALUES (?, ?, ?, ?)`, [column, goalId, value, moment().year(), completed]);
+   console.log(sql);
+   const result = await Db.query(sql);
+   return result;
+}
+
 export async function setCompleted(goalId, completed) {
    // get the schedule type
    const scheduleType = await getScheduleType(goalId);
@@ -56,7 +84,7 @@ export async function setCompleted(goalId, completed) {
          // goal is active today
          setWeekdaysComplete(goalId, completed);
       case 'custom':
-         break;
+         setCustomComplete(goalId, completed);
       case 'endDate':
          setEndDateComplete(goalId, completed);
       default:
