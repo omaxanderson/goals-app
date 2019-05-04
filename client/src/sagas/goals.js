@@ -65,11 +65,29 @@ function* dailyGoalReviewed(action) {
    }
 }
 
+function* weeklyGoalReviewed(action) {
+   try {
+      const result = yield api.post(`/review/${action.payload.goal_id}`, {
+         goal_id: action.payload.goal_id,
+         completed: action.payload.completed,
+      });
+      yield put({
+         type: 'SUCCESS_WEEKLY_GOAL_REVIEWED',
+      });
+      return result;
+   } catch (e) {
+      yield put({
+         type: 'ERROR_WEEKLY_GOAL_REVIEWED',
+      });
+   }
+}
+
 export default function* watchGoals() {
    console.log('from watchGoals');
 
    yield all([
       takeEvery('CREATE_GOAL', createGoal),
       takeEvery('DAILY_GOAL_REVIEWED', dailyGoalReviewed),
+      takeEvery('WEEKLY_GOAL_REVIEWED', weeklyGoalReviewed),
    ]);
 }

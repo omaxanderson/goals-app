@@ -1,6 +1,8 @@
 import React from 'react';
 import GoalCreate from './GoalCreate';
 import DailyGoalReview from './components/DailyGoalReview';
+import WeeklyGoalReview from './components/WeeklyGoalReview';
+import WeekdaysGoalReview from './components/WeekdaysGoalReview';
 import Checkbox from './components/Checkbox';
 import { connect } from 'react-redux';
 import shortid from 'shortid';
@@ -28,10 +30,18 @@ class Goals extends React.Component {
    render() {
       const goalsByType = ['weekly', 'weekdays', 'endDate', 'daily', 'custom']
          .map(type => {
-            return this.getGoalsOfType(type).map(goal => (
-               <DailyGoalReview goal={goal} />
+            return this.getGoalsOfType(type).map(goal => {
+               switch (goal.schedule_type) {
+                  case 'daily':
+                     return <DailyGoalReview goal={goal} />;
+                  case 'weekly':
+                     return <WeeklyGoalReview goal={goal} />;
+                  case 'weekdays':
+                     return <WeekdaysGoalReview goal={goal} />;
+                  default:
+               }
                // <p key={shortid.generate()}>goal: {goal.title}</p>)
-            ));
+            });
          });
       console.log(goalsByType);
 
