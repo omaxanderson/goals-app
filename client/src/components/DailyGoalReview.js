@@ -24,11 +24,14 @@ class DailyGoalReview extends React.Component {
    }
 
    render() {
+               { /* @TODO this shouldn't be goal_reached, 
+                     but back end isn't sending correct data yet */ }
       return (
          <div>
             <p>{this.props.goal.title}</p>
             <Checkbox
                onChange={(a) => this.handleChange(a.target.checked)}
+               checked={this.props.goal.goal_reached}
                label='Did you complete this goal today?'
             />
          </div>

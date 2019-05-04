@@ -13,7 +13,7 @@ export default class Checkbox extends React.Component {
       return (
          <form>
             <label>
-               <input onChange={this.props.onChange} type='checkbox' />
+               <input defaultChecked={this.props.checked} onChange={this.props.onChange} type='checkbox' />
                <span>{this.props.label}</span>
             </label>
          </form>

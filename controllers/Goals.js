@@ -3,17 +3,50 @@ import Goals from '../models/Goals';
 import Db from '../database/db';
 import { get } from 'lodash';
 
+// @TODO put this into some sort of shared module so there's one source of truth
+const tables = {
+   'weekly': 'weekly_goal_completed',
+   'custom': 'custom_goal_completed',
+   'weekdays': 'weekday_goal_completed',
+   'endDate': 'end_date_goal_completed',
+   'daily': 'daily_goal_completed',
+};
+
+// Tbh this goal param should be a class or at least some sort of
+// defined object but eh fuck it.
+async function hydrateReview(goal) {
+   const sql = `SELECT *
+      FROM ${tables[goal.schedule_type]}
+      WHERE goal_id = ${goal.goal_id}`;
+   const review = await Db.query(sql);
+   console.log('during');
+   return review;
+}
+
 export const getAll = async (userId, params) => {
    const sql = `SELECT *
       FROM goals
          JOIN goal_schedule USING (goal_id)`;
    const results = await Db.query(sql);
-   console.log(results);
+
+   console.log('before');
+   const hydrated = results.map(async goal => {
+      const completed = await hydrateReview(goal);
+      return {
+         ...goal,
+         completed,
+      }
+   });
+   const test = await Promise.all(hydrated);
+   console.log(test);
+
+
+   // console.log(results);
    return {
       metadata: {
-         total: results.length,
+         total: test.length,
       },
-      results,
+      results: test,
    };
 }
 

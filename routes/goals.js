@@ -7,7 +7,7 @@ router.get('/', async (req, res, next) => {
    const params = {};
    try {
       const result = await GoalsController.getAll(1, params);
-      console.log('result from router', JSON.stringify(result));
+      //console.log('result from router', JSON.stringify(result));
       res.send(JSON.stringify(result));
    } catch (e) {
       console.log(e);
