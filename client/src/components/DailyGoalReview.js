@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import { connect } from 'react-redux';
 import Checkbox from './Checkbox';
 
@@ -23,6 +24,14 @@ class DailyGoalReview extends React.Component {
       });
    }
 
+   getGoalReachedToday = () => {
+      const today = this.props.goal.completed.filter(completed => {
+         return moment(completed.date, 'YYYY-MM-DD').format('YYYY-MM-DD') ===
+            moment().format('YYYY-MM-DD');
+      });
+      return today[0] ? today[0].completed : 0;
+   }
+
    render() {
                { /* @TODO this shouldn't be goal_reached, 
                      but back end isn't sending correct data yet */ }
@@ -31,7 +40,7 @@ class DailyGoalReview extends React.Component {
             <p>{this.props.goal.title}</p>
             <Checkbox
                onChange={(a) => this.handleChange(a.target.checked)}
-               checked={this.props.goal.goal_reached}
+               checked={this.getGoalReachedToday()}
                label='Did you complete this goal today?'
             />
          </div>
