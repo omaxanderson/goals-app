@@ -3,6 +3,7 @@ import GoalCreate from './GoalCreate';
 import DailyGoalReview from './components/DailyGoalReview';
 import WeeklyGoalReview from './components/WeeklyGoalReview';
 import WeekdaysGoalReview from './components/WeekdaysGoalReview';
+import EndDateGoalReview from './components/EndDateGoalReview';
 import Checkbox from './components/Checkbox';
 import { connect } from 'react-redux';
 import shortid from 'shortid';
@@ -38,6 +39,8 @@ class Goals extends React.Component {
                      return <WeeklyGoalReview goal={goal} />;
                   case 'weekdays':
                      return <WeekdaysGoalReview goal={goal} />;
+                  case 'endDate':
+                     return <EndDateGoalReview goal={goal} />;
                   default:
                }
                // <p key={shortid.generate()}>goal: {goal.title}</p>)

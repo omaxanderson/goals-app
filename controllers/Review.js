@@ -24,18 +24,41 @@ async function setWeeklyComplete(goalId, completed) {
    return result;
 }
 
+// @TODO rename table from weekday_ to weekdays_
+async function setWeekdaysComplete(goalId, completed) {
+   const sql = Db.format(`REPLACE INTO weekday_goal_completed
+      VALUES (?, CURDATE(), ?)`, [goalId, completed]);
+   const result = await Db.query(sql);
+   return result;
+}
+
+// @TODO rename the end date column from end_date to completed_date
+async function setEndDateComplete(goalId, completed) {
+   const sql = Db.format(`REPLACE INTO end_date_goal_completed
+      VALUES (?, CURDATE(), ?)`, [goalId, completed]);
+   const result = await Db.query(sql);
+   return result;
+}
+
 export async function setCompleted(goalId, completed) {
    // get the schedule type
    const scheduleType = await getScheduleType(goalId);
 
+   // @TODO look into some sort of dynamic function call similar to what
+   // we're doing with the database tables?
    switch(scheduleType) {
       case 'daily':
          setDailyComplete(goalId, completed);
       case 'weekly':
          setWeeklyComplete(goalId, completed);
       case 'weekdays':
+         // @TODO should probably do some additional validation here to ensure that the 
+         // goal is active today
+         setWeekdaysComplete(goalId, completed);
       case 'custom':
+         break;
       case 'endDate':
+         setEndDateComplete(goalId, completed);
       default:
    }
 

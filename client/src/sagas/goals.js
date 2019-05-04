@@ -82,6 +82,39 @@ function* weeklyGoalReviewed(action) {
    }
 }
 
+function* weekdaysGoalReviewed(action) {
+   try {
+      const result = yield api.post(`/review/${action.payload.goal_id}`, {
+         goal_id: action.payload.goal_id,
+         completed: action.payload.completed,
+      });
+      yield put({
+         type: 'SUCCESS_WEEKDAYS_GOAL_REVIEWED',
+      });
+      return result;
+   } catch (e) {
+      yield put({
+         type: 'ERROR_WEEKDAYS_GOAL_REVIEWED',
+      });
+   }
+}
+
+function* endDateGoalReviewed(action) {
+   try {
+      const result = yield api.post(`/review/${action.payload.goal_id}`, {
+         goal_id: action.payload.goal_id,
+         completed: action.payload.completed,
+      });
+      yield put({
+         type: 'SUCCESS_END_DATE_GOAL_REVIEWED',
+      });
+      return result;
+   } catch (e) {
+      yield put({
+         type: 'ERROR_END_DATE_GOAL_REVIEWED',
+      });
+   }
+}
 export default function* watchGoals() {
    console.log('from watchGoals');
 
@@ -89,5 +122,7 @@ export default function* watchGoals() {
       takeEvery('CREATE_GOAL', createGoal),
       takeEvery('DAILY_GOAL_REVIEWED', dailyGoalReviewed),
       takeEvery('WEEKLY_GOAL_REVIEWED', weeklyGoalReviewed),
+      takeEvery('WEEKDAYS_GOAL_REVIEWED', weekdaysGoalReviewed),
+      takeEvery('END_DATE_GOAL_REVIEWED', endDateGoalReviewed),
    ]);
 }
