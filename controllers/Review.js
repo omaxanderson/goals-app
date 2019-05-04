@@ -1,4 +1,5 @@
 import Db from '../database/db';
+import moment from 'moment';
 import { getScheduleType } from '../services/Goals';
 
 const tables = {
@@ -16,6 +17,13 @@ async function setDailyComplete(goalId, completed) {
    return result;
 }
 
+async function setWeeklyComplete(goalId, completed) {
+   const sql = Db.format(`REPLACE INTO weekly_goal_completed
+      VALUES (?, ?, ?, ?)`, [goalId, completed, moment().week(), moment().year()]);
+   const result = await Db.query(sql);
+   return result;
+}
+
 export async function setCompleted(goalId, completed) {
    // get the schedule type
    const scheduleType = await getScheduleType(goalId);
@@ -24,6 +32,7 @@ export async function setCompleted(goalId, completed) {
       case 'daily':
          setDailyComplete(goalId, completed);
       case 'weekly':
+         setWeeklyComplete(goalId, completed);
       case 'weekdays':
       case 'custom':
       case 'endDate':

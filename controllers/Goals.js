@@ -19,7 +19,6 @@ async function hydrateReview(goal) {
       FROM ${tables[goal.schedule_type]}
       WHERE goal_id = ${goal.goal_id}`;
    const review = await Db.query(sql);
-   console.log('during');
    return review;
 }
 
@@ -29,7 +28,6 @@ export const getAll = async (userId, params) => {
          JOIN goal_schedule USING (goal_id)`;
    const results = await Db.query(sql);
 
-   console.log('before');
    const hydrated = results.map(async goal => {
       const completed = await hydrateReview(goal);
       return {
@@ -38,7 +36,6 @@ export const getAll = async (userId, params) => {
       }
    });
    const test = await Promise.all(hydrated);
-   console.log(test);
 
 
    // console.log(results);
