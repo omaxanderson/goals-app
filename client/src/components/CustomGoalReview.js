@@ -12,7 +12,7 @@ class CustomGoalReview extends React.Component {
       this.state = {
          goal_id: this.props.goal_id,
          completed: this.props.completed || false,
-         value: this.props.goal.completed.amount || 0,
+         value: this.props.goal.completed.length ? this.props.goal.completed[0].amount : 0,
       };
    }
 
@@ -70,8 +70,8 @@ class CustomGoalReview extends React.Component {
             <div className='col s12 m9'>
                <p>{this.props.goal.title}</p>
                <div className='input-field'>
-                  <select defaultValue={this.props.goal.completed.amount} onChange={this.handleChange}>
-                     {[...Array(this.props.goal.custom_amount).keys()].map(num => <option value={num}>{num}</option>)}
+                  <select defaultValue={this.props.goal.completed.length && this.props.goal.completed[0].amount} onChange={this.handleChange}>
+                     {[...Array(this.props.goal.custom_amount + 1).keys()].map(num => <option value={num}>{num}</option>)}
                   </select>
                   <label htmlFor={id}>{this.getLabel()}</label>
                </div>

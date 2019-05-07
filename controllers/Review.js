@@ -40,7 +40,8 @@ async function setEndDateComplete(goalId, completed) {
    return result;
 }
 
-async function setCustomComplete(goalId, completed) {
+async function setCustomComplete(goalId, amount) {
+   console.log(goalId, amount);
    const customDetails = await getCustomSchedule(goalId);
    const { custom_per_type } = customDetails;
    let column, value;
@@ -61,8 +62,8 @@ async function setCustomComplete(goalId, completed) {
    }
 
    const sql = Db.format(`REPLACE INTO custom_goal_completed
-      (goal_id, ??, year, completed)
-      VALUES (?, ?, ?, ?)`, [column, goalId, value, moment().year(), completed]);
+      (goal_id, ??, year, amount)
+      VALUES (?, ?, ?, ?)`, [column, goalId, value, moment().year(), amount]);
    console.log(sql);
    const result = await Db.query(sql);
    return result;

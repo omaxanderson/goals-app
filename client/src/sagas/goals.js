@@ -120,7 +120,7 @@ function* customGoalReviewed(action) {
    try {
       const result = yield api.post(`/review/${action.payload.goal_id}`, {
          goal_id: action.payload.goal_id,
-         amount: action.payload.amount,
+         completed: action.payload.amount,
       });
       yield put({
          type: 'SUCCESS_CUSTOM_GOAL_REVIEWED',
