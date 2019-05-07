@@ -12,7 +12,7 @@ class CustomGoalReview extends React.Component {
       this.state = {
          goal_id: this.props.goal_id,
          completed: this.props.completed || false,
-         value: this.props.goal.amountCompleted || '',
+         value: this.props.goal.completed.amount || 0,
       };
    }
 
@@ -22,13 +22,13 @@ class CustomGoalReview extends React.Component {
       });
    }
 
-   handleChange = checked => {
-      this.setState({completed: checked});
+   handleChange = e => {
+      this.setState({value: e.target.value});
       this.props.dispatch({
-         type: `WEEKLY_GOAL_REVIEWED`,
+         type: `CUSTOM_GOAL_REVIEWED`,
          payload: {
             goal_id: this.props.goal.goal_id,
-            completed: checked,
+            amount: Number(e.target.value),
          },
       });
    }
@@ -63,14 +63,6 @@ class CustomGoalReview extends React.Component {
          ${per_type_description}? (Goal: ${custom_amount})`;
    }
 
-   test = (e) => {
-      const { value } = e.target;
-      console.log(value, this.props.goal.custom_amount);
-      if (value <= this.props.goal.custom_amount) {
-         this.setState({ value })
-      }
-   }
-
    render() {
       const id = `custom_goal_${this.props.goal.goal_id}_review`;
       return (
@@ -78,7 +70,7 @@ class CustomGoalReview extends React.Component {
             <div className='col s12 m9'>
                <p>{this.props.goal.title}</p>
                <div className='input-field'>
-                  <select defaultValue={this.props.goal.completed.amount}>
+                  <select defaultValue={this.props.goal.completed.amount} onChange={this.handleChange}>
                      {[...Array(this.props.goal.custom_amount).keys()].map(num => <option value={num}>{num}</option>)}
                   </select>
                   <label htmlFor={id}>{this.getLabel()}</label>

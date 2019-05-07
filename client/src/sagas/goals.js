@@ -115,6 +115,24 @@ function* endDateGoalReviewed(action) {
       });
    }
 }
+
+function* customGoalReviewed(action) {
+   try {
+      const result = yield api.post(`/review/${action.payload.goal_id}`, {
+         goal_id: action.payload.goal_id,
+         amount: action.payload.amount,
+      });
+      yield put({
+         type: 'SUCCESS_CUSTOM_GOAL_REVIEWED',
+      });
+      return result;
+   } catch (e) {
+      yield put({
+         type: 'ERROR_CUSTOM_GOAL_REVIEWED',
+      });
+   }
+}
+
 export default function* watchGoals() {
    console.log('from watchGoals');
 
@@ -124,5 +142,6 @@ export default function* watchGoals() {
       takeEvery('WEEKLY_GOAL_REVIEWED', weeklyGoalReviewed),
       takeEvery('WEEKDAYS_GOAL_REVIEWED', weekdaysGoalReviewed),
       takeEvery('END_DATE_GOAL_REVIEWED', endDateGoalReviewed),
+      takeEvery('CUSTOM_GOAL_REVIEWED', customGoalReviewed),
    ]);
 }
