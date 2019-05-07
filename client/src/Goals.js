@@ -6,6 +6,7 @@ import WeekdaysGoalReview from './components/WeekdaysGoalReview';
 import EndDateGoalReview from './components/EndDateGoalReview';
 import CustomGoalReview from './components/CustomGoalReview';
 import Checkbox from './components/Checkbox';
+import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import { connect } from 'react-redux';
 import shortid from 'shortid';
 
@@ -15,6 +16,8 @@ class Goals extends React.Component {
 
       this.state = {
          goals: [],
+         items: ['weekly', 'weekdays', 'endDate', 'daily', 'custom'],
+
       };
    }
    async componentDidMount() {
@@ -30,7 +33,8 @@ class Goals extends React.Component {
    }
 
    render() {
-      const goalsByType = ['weekly', 'weekdays', 'endDate', 'daily', 'custom']
+      //const goalsByType = ['weekly', 'weekdays', 'endDate', 'daily', 'custom']
+      const goalsByType = this.state.items
          .map(type => {
             return this.getGoalsOfType(type).map(goal => {
                switch (goal.schedule_type) {
@@ -46,38 +50,61 @@ class Goals extends React.Component {
                      return <CustomGoalReview goal={goal} />;
                   default:
                }
-               // <p key={shortid.generate()}>goal: {goal.title}</p>)
             });
          });
       console.log(goalsByType);
+      const items = this.state.items.map(schedule => (
+            <div className='row'>
+               <h2>{schedule[0].toUpperCase()}{schedule.substring(1)}</h2>
+               {goalsByType[this.state.items.indexOf(schedule)]}
+            </div>
+      ));
+      /*,
+            <div className='row'>
+               <h2>Weekdays</h2>
+               {goalsByType[this.state.items.indexOf('weekday')]}
+            </div>,
+            <div className='row'>
+               <h2>End Date</h2>
+               {goalsByType[this.state.items.indexOf('endDate')]}
+            </div>,
+            <div className='row'>
+               <h2>Weekly</h2>
+               {goalsByType[this.state.items.indexOf('weekly')]}
+            </div>,
+            <div className='row'>
+               <h2>Custom</h2>
+               {goalsByType[this.state.items.indexOf('custom')]}
+            </div>
+      ];
+      */
 
       return (
          <div className='container'>
             <a href='/create' className='btn'>Create</a>
-            <div className='row'>
-               <h2>Daily</h2>
-               {goalsByType[3]}
-            </div>
-            <div className='row'>
-               <h2>Weekdays</h2>
-               {goalsByType[1]}
-            </div>
-            <div className='row'>
-               <h2>End Date</h2>
-               {goalsByType[2]}
-            </div>
-            <div className='row'>
-               <h2>Weekly</h2>
-               {goalsByType[0]}
-            </div>
-            <div className='row'>
-               <h2>Custom</h2>
-               {goalsByType[4]}
-            </div>
+            <SortableList items={items} onSortEnd={this.onSortEnd} />
          </div>
       );
    }
+
+   onSortEnd = ({oldIndex, newIndex}) => {
+      let items = this.state.items.slice();
+      const temp = items[oldIndex]
+      items[oldIndex] = items[newIndex];
+      items[newIndex] = temp;
+      this.setState({ items });
+   }
 }
+
+// @TODO get this sortable working
+const SortableItem = SortableElement(({value}) => <li>{value}</li>);
+const SortableList = SortableContainer(({items}) => {
+   return (
+      <ul>
+         {items.map((value, index) => (<SortableItem key={`item-${index}`} index={index} value={value} />))}
+      </ul>
+   )
+});
 
 export default connect(state => ({
 
