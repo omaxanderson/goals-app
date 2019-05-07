@@ -1,1 +1,2 @@
 TODO investigate automatically switching custom goals to daily/weekly/monthly if the custom_amount == 1
+TODO maybe try to fix the gross style when the goal sections are being sorted
