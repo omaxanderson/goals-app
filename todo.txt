@@ -1,0 +1,1 @@
+TODO investigate automatically switching custom goals to daily/weekly/monthly if the custom_amount == 1
