@@ -44,6 +44,7 @@ class WeekdaysGoalReview extends React.Component {
             return goal.saturday;
          case 7:
             return goal.sunday;
+         default:
       }
    }
 
