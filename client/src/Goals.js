@@ -60,7 +60,7 @@ class Goals extends React.Component {
          });
       const items = this.state.items.map(schedule => (
             <div className='row'>
-               <h2>{schedule[0].toUpperCase()}{schedule.substring(1)}</h2>
+               <h2><span style={{marginRight: '20px'}}><DragHandle /></span>{schedule[0].toUpperCase()}{schedule.substring(1)}</h2>
                {goalsByType[this.state.items.indexOf(schedule)]}
             </div>
       ));
@@ -91,7 +91,7 @@ class Goals extends React.Component {
 // @TODO nicely alight the handle with the title
 //    heck the title could be part of the handle too...
 const DragHandle = SortableHandle(() => <i className='material-icons'>menu</i>);
-const SortableItem = SortableElement(({value}) => <li><DragHandle />{value}</li>);
+const SortableItem = SortableElement(({value}) => <div>{value}</div>);
 const SortableList = SortableContainer(({items}) => {
    return (
       <ul>
