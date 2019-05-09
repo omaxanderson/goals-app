@@ -72,6 +72,7 @@ export const create = async (data) => {
          case '5': perType = 'month'; break;
       }
 
+      console.log(startDate);
       const goalsInsert = await Db.insert('goals', {
          title,
          description,
@@ -111,14 +112,6 @@ export const create = async (data) => {
       console.log(e);
       throw e;
    }
-
-   /*
-   try {
-      return await goal.save();
-   } catch (e) {
-      return e;
-   }
-   */
 }
 
 export const update = async (goalId, data) => {

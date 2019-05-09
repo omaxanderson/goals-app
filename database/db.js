@@ -35,10 +35,9 @@ export default class Db {
     */
    static insert(table, values, ignore = false) {
       const columns = Db.format(Object.keys(values).filter(key => values[key]).join(', '));
-      const data = Db.format(Object.values(values).filter(value => value)
-         .map(value => (typeof value !== 'number' ? `'${value}'` : value))
-         .join(', '));
-      const sql = `INSERT ${ignore ? 'IGNORE ' : ''}INTO ${table} (${columns}) VALUES (${data})`;
+      const columnString = Object.values(values).filter(val => val).map(val => '?');
+      const data = Object.values(values).filter(val => val);
+      const sql = Db.format(`INSERT ${ignore ? 'IGNORE ' : ''}INTO ${table} (${columns}) VALUES (${columnString})`, data);
       console.log(sql);
       return this.query(sql);
    }
