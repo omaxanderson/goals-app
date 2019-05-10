@@ -12,6 +12,13 @@ export default function(state = {}, action) {
             ...state,
             redirect: true,
          }
+      case 'GOALS_LOADED':
+         console.log(JSON.parse(action.payload.list.result));
+         return {
+            ...state,
+            goals: action.payload.results,
+            list: JSON.parse(action.payload.list.result),
+         }
       default:
          return state;
    }

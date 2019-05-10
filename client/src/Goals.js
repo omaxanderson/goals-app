@@ -6,26 +6,31 @@ import EndDateGoalReview from './components/EndDateGoalReview';
 import CustomGoalReview from './components/CustomGoalReview';
 import { SortableContainer, SortableElement, SortableHandle } from 'react-sortable-hoc';
 import { connect } from 'react-redux';
+import get from 'lodash/get';
 import shortid from 'shortid';
 
 class Goals extends React.Component {
    constructor(props) {
+      console.log('constructor', props.list);
       super(props);
 
       this.state = {
-         goals: [],
-         items: ['weekly', 'weekdays', 'endDate', 'daily', 'custom'],
-
+         goals: this.props.goals,
+         list: this.props.list,
+         // items: ['weekly', 'weekdays', 'daily', 'custom', 'endDate'],
       };
    }
    async componentDidMount() {
-      const result = await fetch('/api/goals');
+      this.props.dispatch({
+         type: 'FETCH_GOALS',
+      });
+      const result = await fetch('/api/list');
       const data = await result.json();
-      this.setState({ goals: data.results });
+      this.setState({ list: JSON.parse(data.result) });
    }
 
    getGoalsOfType = (type) => {
-      return this.state.goals.filter(goal => goal.schedule_type === type);
+      return this.props.goals.filter(goal => goal.schedule_type === type);
    }
 
    cardWrap = (elem) => (
@@ -38,8 +43,7 @@ class Goals extends React.Component {
 
 
    render() {
-      //const goalsByType = ['weekly', 'weekdays', 'endDate', 'daily', 'custom']
-      const goalsByType = this.state.items
+      const goalsByType = this.props.list
          .map(type => {
             return this.getGoalsOfType(type).map(goal => {
                switch (goal.schedule_type) {
@@ -58,10 +62,10 @@ class Goals extends React.Component {
                return false;
             });
          });
-      const items = this.state.items.map(schedule => (
+      const list = this.state.list.map(schedule => (
             <div className='row'>
                <h2><span style={{marginRight: '20px'}}><DragHandle /></span>{schedule[0].toUpperCase()}{schedule.substring(1)}</h2>
-               {goalsByType[this.state.items.indexOf(schedule)]}
+               {goalsByType[this.props.list.indexOf(schedule)]}
             </div>
       ));
 
@@ -69,23 +73,23 @@ class Goals extends React.Component {
          <React.Fragment>
             <div className='container dynamic-margin-top'>
                <a href='/create' className='btn fixed-left'>Create</a>
-               <SortableList useDragHandle items={items} onSortEnd={this.onSortEnd} />
+               <SortableList useDragHandle items={list} onSortEnd={this.onSortEnd} />
             </div>
          </React.Fragment>
       );
    }
 
    onSortEnd = ({oldIndex, newIndex}) => {
-      let items = this.state.items.slice();
+      let list = this.state.list.slice();
 
-      const temp = items[oldIndex]
-      items[oldIndex] = items[newIndex];
-      items[newIndex] = temp;
-      this.setState({ items });
+      const temp = list[oldIndex]
+      list[oldIndex] = list[newIndex];
+      list[newIndex] = temp;
+      this.setState({ list });
 
       this.props.dispatch({
          type: 'GOAL_LIST_SORT',
-         payload: this.state.items,
+         payload: this.state.list,
       });
    }
 }
@@ -103,5 +107,6 @@ const SortableList = SortableContainer(({items}) => {
 });
 
 export default connect(state => ({
-
+   list: get(state, 'goals.list', []),
+   goals: get(state, 'goals.goals', []),
 }))(Goals);

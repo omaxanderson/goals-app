@@ -31,7 +31,7 @@ const api = {
    makeRequest: async (path, body, method) => {
       try {
          const result = await fetch(`/api${path}`, {
-            method: 'POST',
+            method,
             headers: {
                'Content-Type': 'application/json',
             },
@@ -45,6 +45,9 @@ const api = {
          console.log('Error:', e);
          return e;
       }
+   },
+   get: async function(path) {
+      return await this.makeRequest(path);
    },
    post: async function(path, body) {
       return await this.makeRequest(path, body, 'POST');
@@ -141,10 +144,18 @@ function* customGoalReviewed(action) {
 
 function* goalListSort(action) {
    const result = yield api.put('/list', {
-      test: 'max',
+      list: action.payload,
    });
    console.log(result);
    return 'nice';
+}
+
+function* getGoals(action) {
+   const result = yield api.get('/goals');
+   yield put({
+      type: 'GOALS_LOADED',
+      payload: result,
+   });
 }
 
 export default function* watchGoals() {
@@ -156,5 +167,6 @@ export default function* watchGoals() {
       takeEvery('END_DATE_GOAL_REVIEWED', endDateGoalReviewed),
       takeEvery('CUSTOM_GOAL_REVIEWED', customGoalReviewed),
       takeEvery('GOAL_LIST_SORT', goalListSort),
+      takeEvery('FETCH_GOALS', getGoals),
    ]);
 }

@@ -1,5 +1,6 @@
 import QueryBuilder from '../database/QueryBuilder';
 import Goals from '../models/Goals';
+import * as ListController from './List';
 import Db from '../database/db';
 import { get } from 'lodash';
 
@@ -28,6 +29,7 @@ export const getAll = async (userId, params) => {
          JOIN goal_schedule USING (goal_id)`;
    const results = await Db.query(sql);
 
+   const listPromise = ListController.index();
    const hydrated = results.map(async goal => {
       const completed = await hydrateReview(goal);
       return {
@@ -35,15 +37,21 @@ export const getAll = async (userId, params) => {
          completed,
       }
    });
-   const test = await Promise.all(hydrated);
+
+   const promises = await Promise.all([listPromise, ...hydrated]);
+
+   const listOrder = promises[0];
+   const goals = promises.slice(1);
+   console.log(goals);
 
 
    // console.log(results);
    return {
       metadata: {
-         total: test.length,
+         total: goals.length,
       },
-      results: test,
+      list: listOrder,
+      results: goals,
    };
 }
 

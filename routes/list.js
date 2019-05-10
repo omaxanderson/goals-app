@@ -4,11 +4,12 @@ const router = express.Router();
 
 router.get('/', async (req, res, next) => {
    const result = await listController.index();
-   res.send(result);
+   res.send(JSON.stringify(result));
 });
 
-router.post('/', async (req, res, next) => {
-   res.send('post');
+router.put('/', async (req, res, next) => {
+   const result = await listController.update(req.body);
+   res.send(JSON.stringify(result));
 });
 
 export default router;
