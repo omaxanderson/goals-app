@@ -66,10 +66,12 @@ class Goals extends React.Component {
       ));
 
       return (
-         <div className='container'>
-            <a href='/create' className='btn'>Create</a>
-            <SortableList useDragHandle items={items} onSortEnd={this.onSortEnd} />
-         </div>
+         <React.Fragment>
+            <div className='container dynamic-margin-top'>
+               <a href='/create' className='btn fixed-left'>Create</a>
+               <SortableList useDragHandle items={items} onSortEnd={this.onSortEnd} />
+            </div>
+         </React.Fragment>
       );
    }
 
