@@ -10,6 +10,7 @@ import bodyParser from 'body-parser';
 import indexRouter from './routes/index';
 import goalsRouter from './routes/goals';
 import reviewRouter from './routes/review';
+import listRouter from './routes/list';
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use(bodyParser.json());
 app.use('/api', indexRouter);
 app.use('/api/goals', goalsRouter);
 app.use('/api/review', reviewRouter);
+app.use('/api/list', listRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
