@@ -53,3 +53,11 @@
       margin-top: 8vh !important;
    }
 }
+
+.mt-2 {
+   margin-top: 2vh;
+}
+
+.hover-pointer {
+   cursor: grab;
+}

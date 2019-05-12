@@ -64,7 +64,7 @@ class Goals extends React.Component {
          });
       const list = this.state.list.map(schedule => (
             <div className='row'>
-               <h2><span style={{marginRight: '20px'}}><DragHandle /></span>{schedule[0].toUpperCase()}{schedule.substring(1)}</h2>
+               <h2 style={{ marginTop: '0px' }}><span style={{marginRight: '20px'}}><DragHandle /></span>{schedule[0].toUpperCase()}{schedule.substring(1)}</h2>
                {goalsByType[this.props.list.indexOf(schedule)]}
             </div>
       ));
@@ -72,7 +72,7 @@ class Goals extends React.Component {
       return (
          <React.Fragment>
             <div className='container dynamic-margin-top'>
-               <a href='/create' className='btn fixed-left'>Create</a>
+               <a href='/create' className='btn fixed-left' style={{marginTop: '10px'}} >Create</a>
                <SortableList useDragHandle items={list} onSortEnd={this.onSortEnd} />
             </div>
          </React.Fragment>
@@ -96,7 +96,7 @@ class Goals extends React.Component {
 
 // @TODO nicely alight the handle with the title
 //    heck the title could be part of the handle too...
-const DragHandle = SortableHandle(() => <i className='material-icons'>menu</i>);
+const DragHandle = SortableHandle(() => <i className='material-icons hover-pointer'>menu</i>);
 const SortableItem = SortableElement(({value}) => <div>{value}</div>);
 const SortableList = SortableContainer(({items}) => {
    return (

@@ -28,7 +28,7 @@ class WeekdaysGoalReview extends React.Component {
       const { goal } = this.props;
       // would be a lot better if this came to us as a list of day numbers...
       // possibly corresponding to the moment day values
-      console.log(moment().day());
+      console.log(moment().subtract(1, 'days').day());
       switch (moment().day()) {
          case 1:
             return goal.monday;
@@ -42,7 +42,7 @@ class WeekdaysGoalReview extends React.Component {
             return goal.friday;
          case 6:
             return goal.saturday;
-         case 7:
+         case 0:
             return goal.sunday;
          default:
       }
