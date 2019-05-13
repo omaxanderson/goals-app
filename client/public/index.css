@@ -61,3 +61,7 @@
 .hover-pointer {
    cursor: grab;
 }
+
+.hover-pointer:active {
+   cursor: grabbing;
+}

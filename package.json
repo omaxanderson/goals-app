@@ -4,7 +4,12 @@
   "private": true,
   "scripts": {
     "start": "nodemon --exec babel-node app.js --ignore client/",
-    "migrate": "babel-node migrations/migrate.js"
+    "migrate": "babel-node migrations/migrate.js",
+    "daily-cron": "babel-node crons/GoalReview.js daily",
+    "weekly-cron": "babel-node crons/GoalReview.js weekly",
+    "weekdays-cron": "babel-node crons/GoalReview.js weekdays",
+    "custom-cron": "babel-node crons/GoalReview.js custom",
+    "end-date-cron": "babel-node crons/GoalReview.js endDate"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
