@@ -42,10 +42,6 @@ class CustomGoalReview extends React.Component {
          // check week and year and return match
          return completed.week_number === moment().week()
             && completed.year === moment().year();
-         /*
-         return moment(completed.date, 'YYYY-MM-DD').format('YYYY-MM-DD') ===
-            moment().format('YYYY-MM-DD');
-            */
       });
       return week.length && week[0].completed;
    }
@@ -73,7 +69,9 @@ class CustomGoalReview extends React.Component {
                <p>{this.props.goal.title}</p>
                <div className='input-field'>
                   <select
-                     defaultValue={this.props.goal.completed.length && this.props.goal.completed[0].amount}
+                     defaultValue={this.getGoalReachedThisWeek()
+                        && this.props.goal.completed.length
+                        && this.props.goal.completed[0].amount}
                      onChange={this.handleChange}
                   >
                      {[...Array(this.props.goal.custom_amount + 1).keys()].map(num => (
