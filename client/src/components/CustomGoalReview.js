@@ -37,13 +37,18 @@ class CustomGoalReview extends React.Component {
    // we're going to say weeks start on monday and end on sunday
    // actually we could just use momentjs .week() function
    getGoalReachedThisWeek = () => {
-      console.log(moment().week());
+      if (this.props.goal.goal_id === 1) {
+         console.log(moment().week());
+      }
       const week = this.props.goal.completed.filter(completed => {
          // check week and year and return match
-         return completed.week_number === moment().week()
+         return completed.week === moment().week()
             && completed.year === moment().year();
       });
-      return week.length && week[0].completed;
+      if (this.props.goal.goal_id === 1) {
+         console.log(week);
+      }
+      return week.length && week[0].amount;
    }
 
    getLabel = () => {
@@ -63,15 +68,14 @@ class CustomGoalReview extends React.Component {
    // @TODO this isn't re-rendering on select update
    render() {
       const id = `custom_goal_${this.props.goal.goal_id}_review`;
+      const goalReached = this.getGoalReachedThisWeek();
       return (
          <div className='row'>
             <div className='col s12 m9'>
                <p>{this.props.goal.title}</p>
                <div className='input-field'>
                   <select
-                     defaultValue={this.getGoalReachedThisWeek()
-                        && this.props.goal.completed.length
-                        && this.props.goal.completed[0].amount}
+                     defaultValue={goalReached}
                      onChange={this.handleChange}
                   >
                      {[...Array(this.props.goal.custom_amount + 1).keys()].map(num => (

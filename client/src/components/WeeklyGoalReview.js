@@ -32,10 +32,6 @@ class WeeklyGoalReview extends React.Component {
          // check week and year and return match
          return completed.week_number === moment().week()
             && completed.year === moment().year();
-         /*
-         return moment(completed.date, 'YYYY-MM-DD').format('YYYY-MM-DD') ===
-            moment().format('YYYY-MM-DD');
-            */
       });
       return week.length && week[0].completed;
    }
