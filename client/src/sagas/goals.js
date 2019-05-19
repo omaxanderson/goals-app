@@ -12,17 +12,30 @@ function* createGoal(action) {
          body: JSON.stringify(action.payload),
       });
 
+      const resStatus = result.status;
       const json = yield result.json();
+      console.log(json);
 
-      yield put({
-         type: 'SUCCESS_GOAL_CREATE',
-         payload: json,
-      });
+      if (resStatus !== 200) {
+         yield put({
+            type: 'ERROR_GOAL_CREATE',
+            payload: {
+               error: json.error,
+            },
+         });
+      } else {
 
-      // maybe redirect to the goal listing page?
+         yield put({
+            type: 'SUCCESS_GOAL_CREATE',
+            payload: json,
+         });
+      }
    } catch (e) {
       yield put({
-         type: 'ERROR_CREATE_GOAL',
+         type: 'ERROR_GOAL_CREATE',
+         payload: {
+            error: 'just cuz',
+         },
       });
    }
 }

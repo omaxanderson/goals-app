@@ -2,6 +2,7 @@ import QueryBuilder from '../database/QueryBuilder';
 import Goals from '../models/Goals';
 import * as ListController from './List';
 import Db from '../database/db';
+import Error from '../errors/Error';
 import { get } from 'lodash';
 
 // @TODO put this into some sort of shared module so there's one source of truth
@@ -118,7 +119,8 @@ export const create = async (data) => {
       }
    } catch (e) {
       console.log(e);
-      throw e;
+      const error = new Error({error: 'oops'});
+      throw error.what();
    }
 }
 

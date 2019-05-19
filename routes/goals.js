@@ -32,7 +32,7 @@ router.post('/', async (req, res, next) => {
       console.log(e);
       console.log('catching from router');
       res.status(400);
-      res.send(e);
+      res.send(JSON.stringify(e));
    }
 });
 

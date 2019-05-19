@@ -46,8 +46,7 @@ class GoalCreate extends React.Component {
 
    render() {
       if (this.props.redirect) {
-         console.log('redirecting');
-         window.location.href = '/';
+         // window.location.href = '/';
       }
       return (
          <div className='container'>

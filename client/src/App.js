@@ -1,6 +1,7 @@
 import React from 'react';
 import Goals from './Goals';
 import GoalCreate from './GoalCreate';
+import Chart from './components/Chart';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store';
@@ -13,6 +14,7 @@ class App extends React.Component {
                <Switch>
                   <Route exact path='/' component={Goals} />
                   <Route path='/create' component={GoalCreate} />
+                  <Route path='/test' component={Chart} />
                   <Route path='*' component={FourOhFour} />
                </Switch>
             </Router>
