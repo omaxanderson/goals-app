@@ -46,7 +46,7 @@ class GoalCreate extends React.Component {
 
    render() {
       if (this.props.redirect) {
-         // window.location.href = '/';
+         window.location.href = '/';
       }
       return (
          <div className='container'>
@@ -118,6 +118,11 @@ class GoalCreate extends React.Component {
                   </button>
                </form>
             </Row>
+            {this.props.error &&
+               <Row>
+                  <p className='red-text'>{this.props.error}</p>
+               </Row>
+            }
             </div>
          </div>
       );
@@ -181,4 +186,5 @@ class GoalCreate extends React.Component {
 export default connect((state) => ({
    loading: get(state, 'goals.loading', false),
    redirect: get(state, 'goals.redirect', false),
+   error: get(state, 'goals.error', false),
 }))(GoalCreate);

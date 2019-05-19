@@ -80,6 +80,10 @@ class Goals extends React.Component {
    }
 
    onSortEnd = ({oldIndex, newIndex}) => {
+      if (oldIndex === newIndex) {
+         return;
+      }
+
       let list = this.state.list.slice();
 
       const temp = list[oldIndex]
