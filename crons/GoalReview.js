@@ -42,6 +42,7 @@ import get from 'lodash/get';
             Db.query(`INSERT IGNORE INTO custom_goal_completed (goal_id, date, amount, year)
                VALUES (?, ?, 0, ?)`, [goal.goal_id, moment().format('YYYY-MM-DD'), moment().year()]);
          }
+         console.log('daily cron run:', moment().format('YYYY-MM-DD HH:MM:SS'));
       }
 
       custom = async () => {
@@ -50,6 +51,7 @@ import get from 'lodash/get';
          } else {
             console.log(this.customExtra);
          }
+         console.log('custom cron run:', moment().format('YYYY-MM-DD HH:MM:SS'));
       }
 
       weekdays = async () => {
@@ -57,6 +59,7 @@ import get from 'lodash/get';
             Db.query(`INSERT IGNORE INTO weekday_goal_completed
                VALUES (?, ?, 0)`, [goal.goal_id, moment().format('YYYY-MM-DD')]);
          }
+         console.log('weekdays cron run:', moment().format('YYYY-MM-DD HH:MM:SS'));
       }
 
       endDate = async () => {
@@ -64,6 +67,7 @@ import get from 'lodash/get';
             Db.query(`INSERT IGNORE INTO end_date_goal_completed
                VALUES (?, ?, 0)`, [goal.goal_id, moment().format('YYYY-MM-DD')]);
          }
+         console.log('end date cron run:', moment().format('YYYY-MM-DD HH:MM:SS'));
       }
 
       monthly = async () => {
@@ -71,6 +75,7 @@ import get from 'lodash/get';
             Db.query(`INSERT IGNORE INTO custom_goal_completed (goal_id, month, year)
                VALUES (?, ?, ?)`, [goal.goal_id, moment().month(), moment().year()]);
          }
+         console.log('custom monthly cron run:', moment().format('YYYY-MM-DD HH:MM:SS'));
       }
 
       init = async (scheduleType, customExtra) => {
