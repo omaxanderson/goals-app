@@ -2,12 +2,17 @@ import mysql from 'mysql';
 import config from './config';
 
 export default class Db {
-   static query(sql) {
+   static query(sql, params) {
       return new Promise((resolve, reject) => {
          const connection = mysql.createConnection(config);
          connection.connect();
 
-         connection.query(sql, (err, rows) => {
+         let formatted = sql;
+         if (params) {
+            formatted = Db.format(sql, params);
+         }
+
+         connection.query(formatted, (err, rows) => {
             if (err) {
                reject(err);
             } else {

@@ -9,7 +9,8 @@
     "weekly-cron": "babel-node crons/GoalReview.js weekly",
     "weekdays-cron": "babel-node crons/GoalReview.js weekdays",
     "custom-cron": "babel-node crons/GoalReview.js custom",
-    "end-date-cron": "babel-node crons/GoalReview.js endDate"
+    "end-date-cron": "babel-node crons/GoalReview.js endDate",
+    "monthly-cron": "babel-node crons/GoalReview.js custom monthly"
   },
   "dependencies": {
     "body-parser": "^1.18.3",

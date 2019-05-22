@@ -13,6 +13,6 @@ if (process.argv.length < 3) {
 const d = new Date();
 const filename = `files/${d.getFullYear()}${d.getMonth() + 1}${d.getDate()}${d.getHours()}${d.getMinutes()}${d.getSeconds()}_${process.argv[2]}.js`;
 
-console.log(filename);
+console.log(`migrations/${filename}`);
 
 fs.writeFileSync(path.join(__dirname, filename), "export default `QUERY`;");
