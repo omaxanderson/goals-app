@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import CanvasJSReact from './canvasjs.react';
 const CanvasJS = CanvasJSReact.CanvasJS;
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
@@ -9,25 +10,9 @@ class Chart extends React.Component {
       const chart = this.chart;
       chart.render();
    }
+
    render() {
-      const dataPoints = [
-         {
-            x: 1,
-            y: 1,
-         },
-         {
-            x: 3,
-            y: 1,
-         },
-         {
-            x: 4,
-            y: 2,
-         },
-         {
-            x: 5,
-            y: 5,
-         },
-      ];
+      console.log(moment().week(19).format('YYYY-MM-DD'));
       return (
          <CanvasJSChart options={{
             theme: 'light2',
@@ -38,10 +23,18 @@ class Chart extends React.Component {
                title: 'y axis',
                includeZero: true,
             },
-            data: [{
-               type: 'line',
-               dataPoints: dataPoints,
-            }],
+            data: [
+               {
+                  type: 'line',
+                  xValueFormatString: 'YYYY-MM-DD',
+                  dataPoints: this.props.weeklyData[0],
+               },
+               {
+                  type: 'line',
+                  xValueFormatString: 'YYYY-MM-DD',
+                  dataPoints: this.props.weeklyData[1],
+               },
+            ],
          }}
          ref={ref => this.chart = ref}
          />
