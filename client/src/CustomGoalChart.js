@@ -27,6 +27,7 @@ class CustomGoalChart extends React.Component {
       });
       console.log(weeklyData);
       // need to get the data into the right format
+      // @TODO update this to use chartjs instead of canvasjs
       return (
          <div>
             <Chart weeklyData={weeklyData} />
