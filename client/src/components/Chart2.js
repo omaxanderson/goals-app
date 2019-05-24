@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import _ from 'lodash';
+import ColorScheme from 'color-scheme';
 import range from 'lodash.range';
 import flatten from 'lodash.flatten';
 import { Line } from 'react-chartjs-2';
@@ -89,16 +90,22 @@ class Chart extends React.Component {
       }
    }
 
+   generateColorScheme = () => {
+      const scheme = new ColorScheme();
+      console.log(scheme);
+      const colors = scheme.scheme('triade').colors();
+      console.log(colors);
+      return colors;
+   }
+
    getDatasets = (type) => {
+      const colors = this.generateColorScheme();
       return this.convertDataFromGoals(type).map(dataset => ({
          lineTension: 0,
          label: _.capitalize(type),
          fill: false,
-         backgroundColor: [
-            'rgba(0, 255, 20, .2)',
-         ],
          borderColor: [
-            'rgba(0, 255, 20, .2)',
+            `#${colors[Math.floor(Math.random() * colors.length)]}`,
          ],
          data: dataset,
       }));
