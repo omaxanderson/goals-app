@@ -2,6 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import _ from 'lodash';
 import ColorScheme from 'color-scheme';
+// @TODO probably just move to using the full lodash package
 import range from 'lodash.range';
 import flatten from 'lodash.flatten';
 import { Line } from 'react-chartjs-2';
@@ -69,22 +70,27 @@ class Chart extends React.Component {
 
    convertDataFromGoals = (type) => {
       const goals = this.props[type];
-      console.log(goals);
       if (!goals.length) {
          return [];
       }
       if (type === 'weekly') {
          const labels = this.getLabels('weekly', 'YYYYww');
          const datasets = goals.map(goal => {
-               return goal.completed.map(date => {
-                  return [`${date.year}${date.week}`, date.amount]
-               });
+               return [
+                  goal.completed.map(date => {
+                     return [`${date.year}${date.week}`, date.amount]
+                  }),
+                  goal
+               ];
             })
-            .map(goal => {
-               return labels.map(label => {
-                  const exists = goal.find(([key, amount]) => key === label);
-                  return exists && exists.length > 1 ? exists[1] : 0;
-               });
+            .map(([data, goal]) => {
+               return {
+                  data: labels.map(label => {
+                     const exists = data.find(([key, amount]) => key === label);
+                     return exists && exists.length > 1 ? exists[1] : 0;
+                  }),
+                  goal,
+               };
             });
          return datasets;
       }
@@ -92,28 +98,25 @@ class Chart extends React.Component {
 
    generateColorScheme = () => {
       const scheme = new ColorScheme();
-      console.log(scheme);
-      const colors = scheme.scheme('triade').colors();
-      console.log(colors);
-      return colors;
+      return scheme.scheme('triade').colors();
    }
 
    getDatasets = (type) => {
       const colors = this.generateColorScheme();
-      return this.convertDataFromGoals(type).map(dataset => ({
-         lineTension: 0,
-         label: _.capitalize(type),
-         fill: false,
-         borderColor: [
-            `#${colors[Math.floor(Math.random() * colors.length)]}`,
-         ],
-         data: dataset,
-      }));
+      return this.convertDataFromGoals(type).map(dataset => {
+         return {
+            lineTension: 0,
+            label: _.capitalize(_.get(dataset, 'goal.title', 'unknown')),
+            fill: false,
+            borderColor: [
+               `#${colors[Math.floor(Math.random() * colors.length)]}`,
+            ],
+            data: dataset.data,
+         };
+      });
    }
 
    render() {
-      const weeklyDatasets = this.getDatasets('weekly');
-      console.log(weeklyDatasets);
       const weeklyData = {
          labels: this.getLabels('weekly'),
          datasets: this.getDatasets('weekly'),
