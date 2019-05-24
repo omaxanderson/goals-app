@@ -118,6 +118,7 @@ class Chart extends React.Component {
 
    render() {
       const weeklyData = {
+         label: 'Weekly',
          labels: this.getLabels('weekly'),
          datasets: this.getDatasets('weekly'),
       }
