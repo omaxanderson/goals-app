@@ -20,7 +20,7 @@ export default function(state = {}, action) {
             error: action.payload.error,
          }
       case 'GOALS_LOADED':
-         console.log(JSON.parse(action.payload.list.result));
+         //console.log(JSON.parse(action.payload.list.result));
          return {
             ...state,
             goals: action.payload.results,

@@ -1,12 +1,9 @@
 import React from 'react';
-import Chart from './components/Chart.js';
+import Chart from './components/Chart2.js';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
 
 class CustomGoalChart extends React.Component {
-   constructor(props) {
-      super(props);
-   }
 
    async componentDidMount() {
       this.props.dispatch({
@@ -25,12 +22,15 @@ class CustomGoalChart extends React.Component {
             y: c.amount,
          }));
       });
-      console.log(weeklyData);
       // need to get the data into the right format
       // @TODO update this to use chartjs instead of canvasjs
       return (
          <div>
-            <Chart weeklyData={weeklyData} />
+            <Chart
+               weekly={weeklyGoals}
+               monthly={monthlyGoals}
+               daily={dailyGoals}
+            />
          </div>
       );
    }

@@ -40,7 +40,6 @@ class Chart extends React.Component {
          />
       );
    }
-
 }
 
 export default Chart;
