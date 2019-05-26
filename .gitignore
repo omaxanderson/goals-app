@@ -1,4 +1,4 @@
 node_modules/
 client/node_modules/
 database/config.js
-./testlog.txt
+testlog.txt
