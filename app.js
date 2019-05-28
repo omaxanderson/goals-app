@@ -28,12 +28,12 @@ app.use('/api/review', reviewRouter);
 app.use('/api/list', listRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
    next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use((err, req, res, next) => {
    // set locals, only providing error in development
    res.locals.message = err.message;
    res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -66,16 +66,16 @@ function onError(error) {
 
    // handle specific listen errors with friendly messages
    switch (error.code) {
-      case 'EACCES':
-         console.error(`${bind} requires elevated privileges`);
-         process.exit(1);
-         break;
-      case 'EADDRINUSE':
-         console.error(`${bind} is already in use`);
-         process.exit(1);
-         break;
-      default:
-         throw error;
+   case 'EACCES':
+      console.error(`${bind} requires elevated privileges`);
+      process.exit(1);
+      break;
+   case 'EADDRINUSE':
+      console.error(`${bind} is already in use`);
+      process.exit(1);
+      break;
+   default:
+      throw error;
    }
 }
 

@@ -1,17 +1,16 @@
-import QueryBuilder from '../database/QueryBuilder';
+import { get } from 'lodash';
 import Goals from '../models/Goals';
 import * as ListController from './List';
 import Db from '../database/db';
 import Error from '../errors/Error';
-import { get } from 'lodash';
 
 // @TODO put this into some sort of shared module so there's one source of truth
 const tables = {
-   'weekly': 'weekly_goal_completed',
-   'custom': 'custom_goal_completed',
-   'weekdays': 'weekday_goal_completed',
-   'endDate': 'end_date_goal_completed',
-   'daily': 'daily_goal_completed',
+   weekly: 'weekly_goal_completed',
+   custom: 'custom_goal_completed',
+   weekdays: 'weekday_goal_completed',
+   endDate: 'end_date_goal_completed',
+   daily: 'daily_goal_completed',
 };
 
 // Tbh this goal param should be a class or at least some sort of
@@ -24,19 +23,21 @@ async function hydrateReview(goal) {
    return review;
 }
 
-export const getAll = async (userId, params) => {
+// Keeping this because we might want to add in some filtering capabilities later on
+/* eslint-disable-next-line no-unused-vars */
+export const getAll = async (params) => {
    const sql = `SELECT *
       FROM goals
          JOIN goal_schedule USING (goal_id)`;
    const results = await Db.query(sql);
 
    const listPromise = ListController.index();
-   const hydrated = results.map(async goal => {
+   const hydrated = results.map(async (goal) => {
       const completed = await hydrateReview(goal);
       return {
          ...goal,
          completed,
-      }
+      };
    });
 
    const promises = await Promise.all([listPromise, ...hydrated]);
@@ -54,7 +55,7 @@ export const getAll = async (userId, params) => {
       list: listOrder,
       results: goals,
    };
-}
+};
 
 export const create = async (data) => {
    try {
@@ -70,15 +71,17 @@ export const create = async (data) => {
       let amountType = get(data, 'customSchedule.amountType', null);
       let perType = get(data, 'customSchedule.perType', null);
       switch (amountType) {
-         case '0': amountType = 'time'; break;
-         case '1': amountType = 'minute'; break;
-         case '2': amountType = 'hour'; break;
-         case '3': amountType = 'day'; break;
+      case '0': amountType = 'time'; break;
+      case '1': amountType = 'minute'; break;
+      case '2': amountType = 'hour'; break;
+      case '3': amountType = 'day'; break;
+      default:
       }
       switch (get(data, 'customSchedule.perType', null)) {
-         case '3': perType = 'day'; break;
-         case '4': perType = 'week'; break;
-         case '5': perType = 'month'; break;
+      case '3': perType = 'day'; break;
+      case '4': perType = 'week'; break;
+      case '5': perType = 'month'; break;
+      default:
       }
 
       console.log(startDate);
@@ -116,13 +119,13 @@ export const create = async (data) => {
       return {
          goalsInsert,
          scheduleInsert,
-      }
+      };
    } catch (e) {
       console.log(e);
-      const error = new Error({error: 'oops'});
+      const error = new Error({ error: 'oops' });
       throw error.what();
    }
-}
+};
 
 export const update = async (goalId, data) => {
    const goal = new Goals();
@@ -138,10 +141,10 @@ export const update = async (goalId, data) => {
       console.log('catching and throwing from controller');
       throw e;
    }
-}
+};
 
 export const remove = async (goalId) => {
    const goal = new Goals(goalId);
    const result = await goal.remove();
    return result;
-}
+};

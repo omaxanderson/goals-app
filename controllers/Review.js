@@ -1,14 +1,6 @@
-import Db from '../database/db';
 import moment from 'moment';
+import Db from '../database/db';
 import { getScheduleType, getCustomSchedule } from '../services/Goals';
-
-const tables = {
-   'weekly': 'weekly_goal_completed',
-   'custom': 'custom_goal_completed',
-   'weekdays': 'weekdays_goal_completed',
-   'endDate': 'end_date_goal_completed',
-   'daily': 'daily_goal_completed',
-};
 
 async function setDailyComplete(goalId, completed) {
    const sql = Db.format(`REPLACE INTO daily_goal_completed
@@ -44,21 +36,22 @@ async function setCustomComplete(goalId, amount) {
    console.log(goalId, amount);
    const customDetails = await getCustomSchedule(goalId);
    const { custom_per_type } = customDetails;
-   let column, value;
+   let column; let
+      value;
    switch (custom_per_type) {
-      case 'month':
-         column = 'month';
-         value = moment().month();
-         break;
-      case 'week':
-         column = 'week';
-         value = moment().week();
-         break;
-      case 'day':
-         column = 'date';
-         value = moment().format('YYYY-MM-DD');
-         break;
-      default:
+   case 'month':
+      column = 'month';
+      value = moment().month();
+      break;
+   case 'week':
+      column = 'week';
+      value = moment().week();
+      break;
+   case 'day':
+      column = 'date';
+      value = moment().format('YYYY-MM-DD');
+      break;
+   default:
    }
 
    const sql = Db.format(`REPLACE INTO custom_goal_completed
@@ -75,20 +68,25 @@ export async function setCompleted(goalId, completed) {
 
    // @TODO look into some sort of dynamic function call similar to what
    // we're doing with the database tables?
-   switch(scheduleType) {
-      case 'daily':
-         setDailyComplete(goalId, completed);
-      case 'weekly':
-         setWeeklyComplete(goalId, completed);
-      case 'weekdays':
-         // @TODO should probably do some additional validation here to ensure that the 
-         // goal is active today
-         setWeekdaysComplete(goalId, completed);
-      case 'custom':
-         setCustomComplete(goalId, completed);
-      case 'endDate':
-         setEndDateComplete(goalId, completed);
-      default:
+   switch (scheduleType) {
+   case 'daily':
+      setDailyComplete(goalId, completed);
+      break;
+   case 'weekly':
+      setWeeklyComplete(goalId, completed);
+      break;
+   case 'weekdays':
+      // @TODO should probably do some additional validation here to ensure that the
+      // goal is active today
+      setWeekdaysComplete(goalId, completed);
+      break;
+   case 'custom':
+      setCustomComplete(goalId, completed);
+      break;
+   case 'endDate':
+      setEndDateComplete(goalId, completed);
+      break;
+   default:
    }
 
    /*
@@ -104,4 +102,4 @@ export async function setCompleted(goalId, completed) {
    return JSON.stringify({ hello: 'world' });
 }
 
-export default {nice: 'max'};
+export default { nice: 'max' };
