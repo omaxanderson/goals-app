@@ -1,5 +1,5 @@
 // NOTE: this needs to be written in es5 as simply running node from the command
-// 	line won't transpile to es6
+//    line won't transpile to es6
 // Possible fix: create a make file and run `babel-node createMigration ...` as make migrate
 const fs = require('fs');
 const path = require('path');
@@ -15,4 +15,4 @@ const filename = `files/${d.getFullYear()}${d.getMonth() + 1}${d.getDate()}${d.g
 
 console.log(`migrations/${filename}`);
 
-fs.writeFileSync(path.join(__dirname, filename), "export default `QUERY`;");
+fs.writeFileSync(path.join(__dirname, filename), 'export default `QUERY`;');
