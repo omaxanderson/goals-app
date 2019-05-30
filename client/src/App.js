@@ -2,6 +2,7 @@ import React from 'react';
 import Goals from './Goals';
 import GoalCreate from './GoalCreate';
 import CustomGoalChart from './CustomGoalChart';
+import Calendar from './Calendar';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store';
@@ -15,6 +16,7 @@ class App extends React.Component {
                   <Route exact path='/' component={Goals} />
                   <Route path='/create' component={GoalCreate} />
                   <Route path='/chart' component={CustomGoalChart} />
+                  <Route path='/calendar' component={Calendar} />
                   <Route path='*' component={FourOhFour} />
                </Switch>
             </Router>

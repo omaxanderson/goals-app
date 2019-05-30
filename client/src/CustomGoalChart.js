@@ -1,5 +1,6 @@
 import React from 'react';
-import Chart from './components/Chart2.js';
+import Chart from './components/Chart2';
+import Navbar from './components/Navbar';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
 
@@ -17,13 +18,16 @@ class CustomGoalChart extends React.Component {
       const monthlyGoals = goals.filter(goal => goal.custom_per_type === 'month');
       const dailyGoals = goals.filter(goal => goal.custom_per_type === 'day');
       return (
-         <div>
-            <Chart
-               weekly={weeklyGoals}
-               monthly={monthlyGoals}
-               daily={dailyGoals}
-            />
-         </div>
+         <React.Fragment>
+            <Navbar />
+            <div className='container'>
+               <Chart
+                  weekly={weeklyGoals}
+                  monthly={monthlyGoals}
+                  daily={dailyGoals}
+               />
+            </div>
+         </React.Fragment>
       );
    }
 }

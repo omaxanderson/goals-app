@@ -9,6 +9,7 @@ import DatePicker from './components/DatePicker';
 import WeekdaySelector from './components/WeekdaySelector';
 import ScheduleSelector from './components/ScheduleSelector';
 import CustomScheduler from './components/CustomScheduler';
+import Navbar from './components/Navbar';
 import Loader from './components/Loader';
 import 'materialize-css/dist/css/materialize.min.css';
 import M from 'materialize-css';
@@ -49,82 +50,85 @@ class GoalCreate extends React.Component {
          window.location.href = '/';
       }
       return (
-         <div className='container'>
-            {
-               this.props.loading
-               && <Loader />
-            }
-            <h4>Goal Create form</h4>
-            <div className='row'>
-               <form className='col s12'>
+         <React.Fragment>
+            <Navbar />
+            <div className='container'>
+               {
+                  this.props.loading
+                  && <Loader />
+               }
+               <h4>Goal Create form</h4>
+               <div className='row'>
+                  <form className='col s12'>
+                     <Row>
+                        <TextField
+                           label='Title'
+                           size='col s9'
+                           onChange={ (e) => this.setState({ goalTitle: e.target.value}) }
+                        />
+                        <DatePicker
+                           size='col s3'
+                           label='Start Date'
+                           onChange={ (date) => this.setState({
+                              startDate: moment(date).format('YYYY-MM-DD')
+                           }) }
+                        />
+                     </Row>
+                     <Row>
+                        <TextArea
+                           label='Description'
+                           size='col s12'
+                           onChange={ (e) => this.setState({ goalDescription: e.target.value}) }
+                        />
+                     </Row>
+                  </form>
+               { /* this is kind of wonky... */ }
+               <div style={ this.state.scheduleType === 'custom' ? { marginBottom: '0px' } : {}} className='row'>
+                  <div style={ this.state.scheduleType === 'custom' ? { marginBottom: '0px' } : {}}>
+                     <ScheduleSelector
+                        defaultChecked='weekdays'
+                        onChange={ (e) => this.setState({ scheduleType: e }) }
+                     />
+                  </div>
+               </div>
+               <Row>
+                  { this.state.scheduleType === 'weekdays' &&
+                     <WeekdaySelector
+                     onChange={(weekdays) => {
+                        this.setState({ weekdays });
+                     }}
+                     />
+                  }
+                  { this.state.scheduleType === 'custom' &&
+                        <CustomScheduler
+                     onChange={ (e) => this.onCustomScheduleChange(e) }
+                        />
+                  }
+                  { this.state.scheduleType === 'endDate' &&
+                        <DatePicker
+                     size='col s4'
+                     label='End Date'
+                     onChange={(date) => this.setState({ endDate: moment(date).format('YYYY-MM-DD') }) }
+                     id='end-date-picker'
+                        />
+                  }
+               </Row>
+               <Row>
+                  <form>
+                     <button onClick={ this.onSubmit } className='btn waves-effect waves-light' type='submit'>
+                        Submit
+                        <i className='material-icons right'>send</i>
+                     </button>
+                  </form>
+               </Row>
+               {this.props.error &&
                   <Row>
-                     <TextField
-                        label='Title'
-                        size='col s9'
-                        onChange={ (e) => this.setState({ goalTitle: e.target.value}) }
-                     />
-                     <DatePicker
-                        size='col s3'
-                        label='Start Date'
-                        onChange={ (date) => this.setState({
-                           startDate: moment(date).format('YYYY-MM-DD')
-                        }) }
-                     />
+                     <p className='red-text'>{this.props.error}</p>
                   </Row>
-                  <Row>
-                     <TextArea
-                        label='Description'
-                        size='col s12'
-                        onChange={ (e) => this.setState({ goalDescription: e.target.value}) }
-                     />
-                  </Row>
-               </form>
-            { /* this is kind of wonky... */ }
-            <div style={ this.state.scheduleType === 'custom' ? { marginBottom: '0px' } : {}} className='row'>
-               <div style={ this.state.scheduleType === 'custom' ? { marginBottom: '0px' } : {}}>
-                  <ScheduleSelector
-                     defaultChecked='weekdays'
-                     onChange={ (e) => this.setState({ scheduleType: e }) }
-                  />
+               }
                </div>
             </div>
-            <Row>
-               { this.state.scheduleType === 'weekdays' &&
-                  <WeekdaySelector
-                  onChange={(weekdays) => {
-                     this.setState({ weekdays });
-                  }}
-                  />
-               }
-               { this.state.scheduleType === 'custom' &&
-                     <CustomScheduler
-                  onChange={ (e) => this.onCustomScheduleChange(e) }
-                     />
-               }
-               { this.state.scheduleType === 'endDate' &&
-                     <DatePicker
-                  size='col s4'
-                  label='End Date'
-                  onChange={(date) => this.setState({ endDate: moment(date).format('YYYY-MM-DD') }) }
-                  id='end-date-picker'
-                     />
-               }
-            </Row>
-            <Row>
-               <form>
-                  <button onClick={ this.onSubmit } className='btn waves-effect waves-light' type='submit'>
-                     Submit
-                     <i className='material-icons right'>send</i>
-                  </button>
-               </form>
-            </Row>
-            {this.props.error &&
-               <Row>
-                  <p className='red-text'>{this.props.error}</p>
-               </Row>
-            }
-            </div>
-         </div>
+         </React.Fragment>
       );
    }
 

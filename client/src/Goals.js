@@ -6,6 +6,7 @@ import EndDateGoalReview from './components/EndDateGoalReview';
 import CustomGoalReview from './components/CustomGoalReview';
 import { SortableContainer, SortableElement, SortableHandle } from 'react-sortable-hoc';
 import { connect } from 'react-redux';
+import Navbar from './components/Navbar';
 import get from 'lodash/get';
 import shortid from 'shortid';
 
@@ -71,8 +72,8 @@ class Goals extends React.Component {
 
       return (
          <React.Fragment>
+            <Navbar />
             <div className='container dynamic-margin-top'>
-               <a href='/create' className='btn fixed-left' style={{marginTop: '10px'}} >Create</a>
                <SortableList useDragHandle items={list} onSortEnd={this.onSortEnd} />
             </div>
          </React.Fragment>
