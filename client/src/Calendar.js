@@ -16,11 +16,21 @@ class Calendar extends React.Component {
       document.addEventListener('keydown', this.onKeyDown);
    }
 
+   nextMonth = () => {
+      const d = moment().month(this.state.month).year(this.state.year).add(1, 'month');
+      this.setState({ month: d.month(), year: d.year() });
+   }
+
+   previousMonth = () => {
+      const d = moment().month(this.state.month).year(this.state.year).subtract(1, 'month');
+      this.setState({ month: d.month(), year: d.year() });
+   }
+
    onKeyDown = ({keyCode}) => {
       if ([87, 77].includes(keyCode)) {
          this.setState({ view: keyCode === 87 ? 'w' : 'm' });
       } else if ([37, 39].includes(keyCode)) {
-         this.setState({ month: keyCode === 37 ? this.state.month - 1 : this.state.month + 1 });
+         keyCode === 37 ? this.previousMonth() : this.nextMonth();
       }
    }
 
@@ -29,10 +39,10 @@ class Calendar extends React.Component {
       return (
          <React.Fragment>
             <Navbar />
-            <div className='row'>
+            <div className='row' style={{marginBottom: '0px'}}>
                <div className='col s4'>
                   <button
-                     onClick={() => this.setState({ month: this.state.month - 1 })}
+                     onClick={this.previousMonth}
                      style={{marginLeft: '3vw', marginTop: '1.3rem'}}
                      className='left btn-floating cyan'
                   >
@@ -41,12 +51,12 @@ class Calendar extends React.Component {
                </div>
                <div className='col s4'>
                   <div className='center-align'>
-                     <h4>{moment().month(this.state.month).format('MMMM')}</h4>
+                     <h4>{moment().month(this.state.month).year(this.state.year).format('MMMM YYYY')}</h4>
                   </div>
                </div>
                <div className='col s4'>
                   <button
-                     onClick={() => this.setState({ month: this.state.month + 1 })}
+                     onClick={this.nextMonth}
                      style={{marginRight: '3vw', marginTop: '1.3rem'}}
                      className='right btn-floating cyan'
                   >
@@ -55,10 +65,26 @@ class Calendar extends React.Component {
                </div>
             </div>
             {view === 'm' &&
-               <Grid
-                  month={this.state.month}
-                  year={this.state.year}
-               />
+               <React.Fragment>
+                  <div style={{ height: '20px' }}>
+                     {
+                        _.range(0, 7).map(num => (
+                           <div
+                              key={`label-${num}`}
+                              className='center-align'
+                              style={{display: 'inline-block', width: `${100 / 7}%`}}
+                           >
+                              {moment().day(num).format('ddd')}
+                           </div>
+                        ))
+                     }
+                  </div>
+
+                  <Grid
+                     month={this.state.month}
+                     year={this.state.year}
+                  />
+               </React.Fragment>
             }
          </React.Fragment>
       );
@@ -77,7 +103,10 @@ class Grid extends React.Component {
    // man this is hacky...
    getWeeks = (month, year) => {
       const d = moment().month(month).year(year);
-      const height = 100 / (d.endOf('month').week() - d.startOf('month').week() + 1);
+      let height = 100 / (d.endOf('month').week() - d.startOf('month').week() + 1);
+      if (height < 0) {
+         height = 100 / (moment(d).endOf('year').subtract(1, 'week').week() - d.startOf('month').week() + 2);
+      }
       const monthEnd = d.endOf('month').date();
       const startDay = d.startOf('month').day();
       const monthArr = _.range(1, monthEnd + 1);
@@ -121,11 +150,12 @@ class Grid extends React.Component {
                         display: 'inline-block',
                         borderLeft: '1px solid #CCCCCC',
                         borderTop: '1px solid #CCCCCC',
+                        padding: '5px',
                      }}
                   >
                      <span
                         key={`day_${num}`}
-                        style={{paddingLeft: '1vw', color}}
+                        style={{paddingLeft: '0.5vw', color}}
                      >
                         {num}
                      </span>
