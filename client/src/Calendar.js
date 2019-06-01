@@ -34,7 +34,7 @@ class Calendar extends React.Component {
                   <button
                      onClick={() => this.setState({ month: this.state.month - 1 })}
                      style={{marginLeft: '3vw', marginTop: '1.3rem'}}
-                     className='left btn-floating waves-effect red'
+                     className='left btn-floating cyan'
                   >
                      <i className='material-icons'>arrow_back</i>
                   </button>
@@ -48,7 +48,7 @@ class Calendar extends React.Component {
                   <button
                      onClick={() => this.setState({ month: this.state.month + 1 })}
                      style={{marginRight: '3vw', marginTop: '1.3rem'}}
-                     className='right btn-floating waves-effect waves-light red'
+                     className='right btn-floating cyan'
                   >
                      <i className='material-icons'>arrow_forward</i>
                   </button>
