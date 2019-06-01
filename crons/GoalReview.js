@@ -1,13 +1,12 @@
-import Db from '../database/db';
 import moment from 'moment';
 import get from 'lodash/get';
+import Db from '../database/db';
 
 (async () => {
    class GoalReview {
       weekly = async () => {
          // weeks start on sunday and end on saturday
          //    we'll want to run this on saturday night I think
-         const weekNumber = moment().week();
          for (const goal of this.goals) {
             Db.query(`INSERT IGNORE INTO weekly_goal_completed
                VALUES (?, 0, ?, ?)`, [goal.goal_id, moment().week(), moment().year()]);
@@ -16,8 +15,7 @@ import get from 'lodash/get';
          const customGoals = await Db.query(`SELECT *
             FROM goal_schedule
             WHERE schedule_type = 'custom'
-            AND custom_per_type = 'week'`
-         );
+            AND custom_per_type = 'week'`);
 
          for (const goal of customGoals) {
             Db.query(`INSERT IGNORE INTO custom_goal_completed (goal_id, amount, week, year)
@@ -35,8 +33,7 @@ import get from 'lodash/get';
          const customGoals = await Db.query(`SELECT *
             FROM goal_schedule
             WHERE schedule_type = 'custom'
-            AND custom_per_type = 'day'`
-         );
+            AND custom_per_type = 'day'`);
 
          for (const goal of customGoals) {
             Db.query(`INSERT IGNORE INTO custom_goal_completed (goal_id, date, amount, year)
@@ -89,9 +86,9 @@ import get from 'lodash/get';
             weekdays: `AND ${moment().format('dddd').toLowerCase()} = 1`,
             endDate: Db.format('AND end_date = ?', [moment().format('YYYY-MM-DD')]),
             custom: {
-               monthly: `AND custom_per_type = 'month'`,
+               monthly: 'AND custom_per_type = \'month\''
             }
-         }
+         };
 
          const objectPath = scheduleType + (customExtra ? `.${customExtra}` : '');
          const extraSql = get(extra, objectPath, '');
@@ -102,4 +99,4 @@ import get from 'lodash/get';
    const goalReview = new GoalReview();
    await goalReview.init(process.argv[2], process.argv[3]);
    goalReview[process.argv[2]]();
-})()
+})();
