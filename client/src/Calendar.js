@@ -1,5 +1,7 @@
 import React from 'react';
 import Navbar from './components/Navbar';
+import _ from 'lodash';
+import moment from 'moment';
 
 class Calendar extends React.Component {
    constructor(props) {
@@ -14,7 +16,7 @@ class Calendar extends React.Component {
 
    // might not need this
    toggleView = () => {
-      this.setState({ view: this.state.view == 'm' ? 'w' : 'm' });
+      this.setState({ view: this.state.view === 'm' ? 'w' : 'm' });
    }
 
    onKeyDown = ({keyCode}) => {
@@ -28,7 +30,7 @@ class Calendar extends React.Component {
       return (
          <React.Fragment>
             <Navbar />
-            <div>hello { view == 'm' ? 'month' : 'week' } view</div>
+            <div>hello { view === 'm' ? 'month' : 'week' } view</div>
             <Grid />
          </React.Fragment>
       );
@@ -45,29 +47,30 @@ class Grid extends React.Component {
    render() {
       return (
          <div className='container'>
-            <div style={{overflow: 'hidden'}}>
-               <div style={{margin: '0 -10%'}}>
-                  <div className='row' style={{marginLeft: '5%'}}>
-                     <div className='teal center col' style={{width: '10%', height: '7vh'}}>1</div>
-                     <div className='teal center col s1' style={{width: '10%', height: '7vh'}}>2</div>
-                     <div className='teal center col s1' style={{width: '10%', height: '7vh'}}>3</div>
-                     <div className='teal center col s1' style={{width: '10%', height: '7vh'}}>4</div>
-                     <div className='teal center col s1' style={{width: '10%', height: '7vh'}}>5</div>
-                     <div className='teal center col s1' style={{width: '10%', height: '7vh'}}>6</div>
-                     <div className='teal center col s1' style={{width: '10%', height: '7vh'}}>7</div>
-                  </div>
-                  <div className='row' style={{marginLeft: '5%'}}>
-                  </div>
-                  <div className='row' style={{marginLeft: '5%'}}>
-                  </div>
-                  <div className='row' style={{marginLeft: '5%'}}>
-                  </div>
-                  <div className='row' style={{marginLeft: '5%'}}>
-                  </div>
-               </div>
-            </div>
+            {this.getWeeks()}
          </div>
       );
+   }
+
+   getWeeks = () => {
+      const dayArr = moment().endOf('month').date();
+      console.log('dayArr', dayArr);
+      const days = _.range(0,5).map(n => {
+         return (<div key={`week_${n}`} style={{height: '10vh'}}>
+               {
+                  _.range(0,7).map(m => (
+                     <div
+                        key={`day__${n * 7 + m + 1}`}
+                        style={{height: '100%', width: '14.286%', display: 'inline-block', border: '1px solid black'}}
+                     >
+                           <span key={`day_${n * 7 + m + 1}`} style={{paddingLeft: '1vw'}}>{n * 7 + m + 1 <= dayArr ? n * 7 + m + 1 : ''}</span>
+                     </div>)
+                  )
+               }
+            </div>
+         );
+      });
+      return days;
    }
 }
 
