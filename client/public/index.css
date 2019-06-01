@@ -1,3 +1,24 @@
+/*
+body {
+   height: 100%;
+}
+
+html {
+   height: 100%;
+}
+
+#root {
+   height: 100%;
+}
+*/
+
+#calendar-container {
+   position: absolute;
+   bottom: 0;
+   top: 140px;
+   width: 100%;
+}
+
 .date-picker-collapsible > ul > li > .collapsible-body {
    padding-top: 0px;
    padding-bottom: 0px;
