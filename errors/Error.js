@@ -11,9 +11,7 @@ class Error {
       this._errorText = e;
    }
 
-   what = () => {
-      return this._errorText;
-   }
+   what = () => this._errorText;
 }
 
 export default Error;

@@ -36,8 +36,9 @@ async function setCustomComplete(goalId, amount) {
    console.log(goalId, amount);
    const customDetails = await getCustomSchedule(goalId);
    const { custom_per_type } = customDetails;
-   let column; let
-      value;
+   let column;
+   let value;
+   /* eslint-disable-next-line camelcase */
    switch (custom_per_type) {
    case 'month':
       column = 'month';

@@ -1,5 +1,5 @@
 import React from 'react';
-import Chart from './components/Chart2';
+import Chart from './components/Chart';
 import Navbar from './components/Navbar';
 import { connect } from 'react-redux';
 import get from 'lodash/get';

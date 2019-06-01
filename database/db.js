@@ -40,7 +40,7 @@ export default class Db {
     */
    static insert(table, values, ignore = false) {
       const columns = Db.format(Object.keys(values).filter(key => values[key]).join(', '));
-      const columnString = Object.values(values).filter(val => val).map(val => '?');
+      const columnString = Object.values(values).filter(val => val).map(() => '?');
       const data = Object.values(values).filter(val => val);
       const sql = Db.format(`INSERT ${ignore ? 'IGNORE ' : ''}INTO ${table} (${columns}) VALUES (${columnString})`, data);
       console.log(sql);

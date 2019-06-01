@@ -85,12 +85,14 @@ export const create = async (data) => {
       }
 
       console.log(startDate);
+      /* eslint-disable camelcase */
       const goalsInsert = await Db.insert('goals', {
          title,
          description,
          goal_reached: 0,
          start_date: startDate,
       });
+      /* eslint-enable camelcase */
 
       const weekdayList = data.weekdays && data.weekdays.split(',');
       const weekdays = scheduleType === 'weekdays'
@@ -106,6 +108,7 @@ export const create = async (data) => {
          : {};
       console.log(weekdays);
 
+      /* eslint-disable camelcase */
       const scheduleInsert = await Db.insert('goal_schedule', {
          goal_id: goalsInsert.insertId,
          end_date: endDate,
@@ -115,6 +118,7 @@ export const create = async (data) => {
          custom_amount_type: amountType,
          custom_per_type: perType,
       });
+      /* eslint-enable camelcase */
 
       return {
          goalsInsert,
@@ -131,9 +135,11 @@ export const update = async (goalId, data) => {
    const goal = new Goals();
    await goal.loadById(goalId);
 
-   for (const column in data) {
+   /* eslint-disable guard-for-in */
+   for (const column of Object.keys(data)) {
       goal[column] = data[column];
    }
+   /* eslint-enable guard-for-in */
 
    try {
       return await goal.save();
