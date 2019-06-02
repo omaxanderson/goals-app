@@ -8,11 +8,11 @@ import goals from './sagas/goals';
 const sagaMiddleware = createSagaMiddleware();
 
 export default createStore(
-  rootReducer,
-  compose(
-    applyMiddleware(sagaMiddleware),
-    composeWithDevTools(),
-  ),
+   rootReducer,
+   compose(
+      applyMiddleware(sagaMiddleware),
+      composeWithDevTools(),
+   ),
 );
 
 // Run saga middleware here
