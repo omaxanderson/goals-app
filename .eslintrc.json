@@ -31,6 +31,6 @@
        "import/no-dynamic-require": 1,
        "no-restricted-syntax": 1,
        "no-underscore-dangle": "off",
-       "camelcase": ["error", { "ignoreDestructuring": true }]
+       "camelcase": ["off"]
     }
 }

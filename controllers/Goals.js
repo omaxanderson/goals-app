@@ -26,13 +26,14 @@ async function hydrateReview(goal) {
 // Keeping this because we might want to add in some filtering capabilities later on
 /* eslint-disable-next-line no-unused-vars */
 export const getAll = async (userId, params) => {
-   const { f_goal_types, columns } = params;
+   const { f_goal_types } = params;
    const where = [];
 
-   // Here is where we're going to start putting various filter/sorting options and building out the query
-   //    Depending on the scope and if we want to use this elsewhere, this should be a global service
+   // Here is where we're going to start putting various filter/sorting options
+   // and building out the query
+   //    Depending on the scope and if we want to use this elsewhere,
+   //    this should be a global service
    if (f_goal_types) {
-      console.log(f_goal_types);
       where.push(`AND schedule_type IN (${f_goal_types.split(',').map(type => Db.format('?', [type])).join(',')})`);
    }
 
@@ -57,7 +58,7 @@ export const getAll = async (userId, params) => {
 
    const listOrder = promises[0];
    const goals = promises.slice(1);
-   //console.log(goals);
+   // console.log(goals);
 
 
    // console.log(results);

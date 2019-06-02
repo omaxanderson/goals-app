@@ -61,14 +61,13 @@ class Goals extends Model {
                description = ?,
                goal_reached = ?
                WHERE goal_id = ?`,
-               [
-                  this._userId,
-                  this._title,
-                  this._description,
-                  this._goalReached,
-                  this._goalId
-               ]
-            ));
+            [
+               this._userId,
+               this._title,
+               this._description,
+               this._goalReached,
+               this._goalId
+            ]));
 
             const scheduleUpdate = await Db.query(Db.format(`UPDATE goal_schedule
                SET start_date = ?,
@@ -79,17 +78,16 @@ class Goals extends Model {
                monthly = ?,
                yearly = ?
                WHERE goal_id = ?`,
-               [
-                  this._startDate,
-                  this._endDate,
-                  this._isRecurring,
-                  this._daily,
-                  this._weekly,
-                  this._monthly,
-                  this._yearly,
-                  this._goalId,
-               ]
-            ));
+            [
+               this._startDate,
+               this._endDate,
+               this._isRecurring,
+               this._daily,
+               this._weekly,
+               this._monthly,
+               this._yearly,
+               this._goalId,
+            ]));
 
             return {
                goalUpdate,
@@ -133,10 +131,10 @@ class Goals extends Model {
                custom_per_type: this._perType,
             });
 
-            return { 
+            return {
                goalsInsert,
                scheduleInsert,
-            }
+            };
          } catch (e) {
             console.log('whoops');
             console.log(e);
@@ -149,17 +147,17 @@ class Goals extends Model {
       try {
          const result = Db.query(Db.format(`DELETE from goals
             WHERE goal_id = ?`,
-            [ this._goalId ]
-         ));
+         [this._goalId]));
          return result;
       } catch (e) {
          throw e;
       }
    }
 
-   // ============ 	Setters   ===============
+   // ============   Setters   ===============
    get title() { return this._title; }
 
+   /* eslint-disable lines-between-class-members */
    set goalId(id) { this._goalId = id; }
    set title(title) { this._title = title; }
    set description(description) { this._description = description; }
@@ -173,6 +171,7 @@ class Goals extends Model {
    set amount(amount) { this._amount = amount; }
    set amountType(amountType) { this._amountType = amountType; }
    set perType(perType) { this._perType = perType; }
+   /* eslint-enable lines-between-class-members */
 
 
    /* Add a column to the list of selected columns
@@ -199,7 +198,6 @@ class Goals extends Model {
       const result = await this.execute();
       return result;
    }
-
 }
 
 export default Goals;

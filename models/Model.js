@@ -1,7 +1,6 @@
 import QueryBuilder from '../database/QueryBuilder';
 
 export default class Model {
-
    constructor() {
       this._query = new QueryBuilder();
    }
@@ -22,9 +21,7 @@ export default class Model {
       this._query.addJoin(sql);
    }
 
-   execute = async () => {
-      return await this._query.execute();
-   }
+   execute = async () => this._query.execute()
 
    fetchOne = async () => {
       console.log(this._query._sql);
