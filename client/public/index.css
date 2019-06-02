@@ -52,29 +52,6 @@ html {
    background: rgba( 51, 51, 51, 0.7);
 }
 
-
-@media only screen and (min-width: 992px) {
-   .fixed-left {
-      position: fixed;
-      top: 2%;
-      left: 2%;
-      z-index: 100;
-   }
-}
-
-@media only screen and (max-width: 991px) {
-   .fixed-left {
-      position: fixed;
-      width: inherit;
-      top: 2vh;
-      z-index: 100;
-   }
-
-   .dynamic-margin-top {
-      margin-top: 11vh !important;
-   }
-}
-
 .mt-2 {
    margin-top: 2vh;
 }

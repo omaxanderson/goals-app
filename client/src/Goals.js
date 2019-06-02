@@ -74,7 +74,7 @@ class Goals extends React.Component {
       return (
          <React.Fragment>
             <Navbar />
-            <div className="container dynamic-margin-top">
+            <div className="container">
                <SortableList useDragHandle items={list} onSortEnd={this.onSortEnd} />
             </div>
          </React.Fragment>
