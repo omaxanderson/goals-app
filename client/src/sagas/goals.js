@@ -134,8 +134,7 @@ function* goalListSort(action) {
 }
 
 function* getGoals(action) {
-   // const result = yield api.get('/goals', { params: action.params });
-   const result = yield api.get('/goals');
+   const result = yield api.get('/goals', { params: action.params });
    yield put({
       type: 'GOALS_LOADED',
       payload: result,

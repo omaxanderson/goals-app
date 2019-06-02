@@ -25,7 +25,6 @@ const api = {
       }
    },
    get: async function(path, params) {
-      console.log('params', params);
       return await this.makeRequest(path, params, 'GET');
    },
    post: async function(path, body) {

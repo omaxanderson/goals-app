@@ -21,7 +21,7 @@ class Calendar extends React.Component {
       this.props.dispatch({
          type: 'FETCH_GOALS',
          params: {
-            columns: 'weekly,weekdays,daily',
+            f_goal_types: 'weekly,weekdays,daily',
          },
       });
    }

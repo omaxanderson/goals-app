@@ -5,9 +5,9 @@ const router = express.Router();
 
 // GET a list of goals
 router.get('/', async (req, res, next) => {
-   const params = {};
+   const { query } = req;
    try {
-      const result = await GoalsController.getAll(1, params);
+      const result = await GoalsController.getAll(1, query);
       // console.log('result from router', JSON.stringify(result));
       res.send(JSON.stringify(result));
    } catch (e) {
