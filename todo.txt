@@ -3,3 +3,4 @@ TODO maybe try to fix the gross style when the goal sections are being sorted
 TODO new routes and/or options to specify the number of completed entries to return
 TODO pagination for the goal completed list, after a year we'd be returning hundreds of objects for each goal
 TODO clean up the /goals result object, only return relevant attributes
+TODO add git hook for pre-commit or pre-push
