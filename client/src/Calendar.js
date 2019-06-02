@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import Navbar from './components/Navbar';
 import _ from 'lodash';
 import moment from 'moment';
@@ -14,6 +15,15 @@ class Calendar extends React.Component {
       };
 
       document.addEventListener('keydown', this.onKeyDown);
+   }
+
+   componentDidMount() {
+      this.props.dispatch({
+         type: 'FETCH_GOALS',
+         params: {
+            columns: 'weekly,weekdays,daily',
+         },
+      });
    }
 
    nextMonth = () => {
@@ -170,4 +180,6 @@ class Grid extends React.Component {
 }
 
 // @TODO add the redux store
-export default Calendar;
+export default connect(state => ({
+   goals: _.get(state, 'goals', []),
+}))(Calendar);

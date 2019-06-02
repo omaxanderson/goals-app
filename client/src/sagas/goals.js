@@ -1,4 +1,5 @@
 import { all, put, takeEvery } from 'redux-saga/effects';
+import api from '../util/api';
 
 function* createGoal(action) {
    try {
@@ -24,7 +25,6 @@ function* createGoal(action) {
             },
          });
       } else {
-
          yield put({
             type: 'SUCCESS_GOAL_CREATE',
             payload: json,
@@ -39,36 +39,6 @@ function* createGoal(action) {
       });
    }
 }
-
-const api = {
-   makeRequest: async (path, body, method) => {
-      try {
-         const result = await fetch(`/api${path}`, {
-            method,
-            headers: {
-               'Content-Type': 'application/json',
-            },
-            body: typeof body === 'string'
-               ? body
-               : JSON.stringify(body),
-         });
-         const data = await result.json();
-         return data;
-      } catch (e) {
-         console.log('Error:', e);
-         return e;
-      }
-   },
-   get: async function(path) {
-      return await this.makeRequest(path);
-   },
-   post: async function(path, body) {
-      return await this.makeRequest(path, body, 'POST');
-   },
-   put: async function(path, body) {
-      return await this.makeRequest(path, body, 'PUT');
-   },
-};
 
 function* dailyGoalReviewed(action) {
    try {
@@ -164,6 +134,7 @@ function* goalListSort(action) {
 }
 
 function* getGoals(action) {
+   // const result = yield api.get('/goals', { params: action.params });
    const result = yield api.get('/goals');
    yield put({
       type: 'GOALS_LOADED',
