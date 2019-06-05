@@ -43,8 +43,10 @@ function* createGoal(action) {
 function* dailyGoalReviewed(action) {
    try {
       const result = yield api.post(`/review/${action.payload.goal_id}`, {
-         goal_id: action.payload.goal_id,
-         completed: action.payload.completed,
+         body: {
+            goal_id: action.payload.goal_id,
+            completed: action.payload.completed,
+         },
       });
       yield put({
          type: 'SUCCESS_DAILY_GOAL_REVIEWED',
@@ -60,8 +62,10 @@ function* dailyGoalReviewed(action) {
 function* weeklyGoalReviewed(action) {
    try {
       const result = yield api.post(`/review/${action.payload.goal_id}`, {
-         goal_id: action.payload.goal_id,
-         completed: action.payload.completed,
+         body: {
+            goal_id: action.payload.goal_id,
+            completed: action.payload.completed,
+         },
       });
       yield put({
          type: 'SUCCESS_WEEKLY_GOAL_REVIEWED',
@@ -77,8 +81,10 @@ function* weeklyGoalReviewed(action) {
 function* weekdaysGoalReviewed(action) {
    try {
       const result = yield api.post(`/review/${action.payload.goal_id}`, {
-         goal_id: action.payload.goal_id,
-         completed: action.payload.completed,
+         body: {
+            goal_id: action.payload.goal_id,
+            completed: action.payload.completed,
+         },
       });
       yield put({
          type: 'SUCCESS_WEEKDAYS_GOAL_REVIEWED',
@@ -94,8 +100,10 @@ function* weekdaysGoalReviewed(action) {
 function* endDateGoalReviewed(action) {
    try {
       const result = yield api.post(`/review/${action.payload.goal_id}`, {
-         goal_id: action.payload.goal_id,
-         completed: action.payload.completed,
+         body: {
+            goal_id: action.payload.goal_id,
+            completed: action.payload.completed,
+         },
       });
       yield put({
          type: 'SUCCESS_END_DATE_GOAL_REVIEWED',
@@ -111,8 +119,10 @@ function* endDateGoalReviewed(action) {
 function* customGoalReviewed(action) {
    try {
       const result = yield api.post(`/review/${action.payload.goal_id}`, {
-         goal_id: action.payload.goal_id,
-         completed: action.payload.amount,
+         body: {
+            goal_id: action.payload.goal_id,
+            completed: action.payload.amount,
+         },
       });
       yield put({
          type: 'SUCCESS_CUSTOM_GOAL_REVIEWED',
@@ -127,7 +137,9 @@ function* customGoalReviewed(action) {
 
 function* goalListSort(action) {
    const result = yield api.put('/list', {
-      list: action.payload,
+      body: {
+         list: action.payload,
+      },
    });
    console.log(result);
    return 'nice';

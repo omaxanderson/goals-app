@@ -1,4 +1,11 @@
 const api = {
+   /*
+    * Method to call the API
+    * @param {string} path - URL path
+    * @param {object|string} options - options to be passed to the fetch method
+    *                                - this should either contain the get query parameters or PUT/POST body
+    * @param {string} method - REST method to use
+    */
    makeRequest: async (path, options = {}, method = 'GET') => {
       try {
          const { params, body } = options;
@@ -8,15 +15,19 @@ const api = {
          }
          path = `/api${path}${queryParams ? `?${queryParams}` : ''}`;
 
-         const result = await fetch(path, {
-            method,
-            headers: {
-               'Content-Type': 'application/json',
-            },
-            body: typeof body === 'string'
-               ? body
-               : JSON.stringify(body),
-         });
+         const opts = method !== 'GET'
+            ? {
+               method,
+               headers: {
+                  'Content-Type': 'application/json',
+               },
+               body: typeof body === 'string'
+                  ? body
+                  : JSON.stringify(body),
+            }
+            : {};
+
+         const result = await fetch(path, opts);
          const data = await result.json();
          return data;
       } catch (e) {
