@@ -26,9 +26,6 @@ class Goals extends React.Component {
       this.props.dispatch({
          type: 'FETCH_GOALS',
       });
-      const result = await fetch('/api/list');
-      const data = await result.json();
-      this.setState({ list: JSON.parse(data.result) });
    }
 
    getGoalsOfType = type => this.props.goals.filter(goal => goal.schedule_type === type)
@@ -60,7 +57,7 @@ class Goals extends React.Component {
             }
             return false;
          }));
-      const list = this.state.list.map(schedule => (
+      const list = this.props.list.map(schedule => (
          <div className="row">
             <h2 style={{ marginTop: '0px' }}>
                <span style={{ marginRight: '20px' }}><DragHandle /></span>
