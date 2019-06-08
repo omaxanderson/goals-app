@@ -1,10 +1,13 @@
 import Db from '../database/db';
 
-export const index = async () => {
-   const sql = 'SELECT json FROM list_order';
+export const index = async (f_goal_types = '') => {
+   const sql = `SELECT json FROM list_order`;
    const result = await Db.fetchOne(sql);
+   const goal_types = f_goal_types.split(',');
    return {
-      result: result.json,
+      result: f_goal_types
+         ? JSON.parse(result.json).filter(type => goal_types.includes(type))
+         : JSON.parse(result.json),
    };
 };
 

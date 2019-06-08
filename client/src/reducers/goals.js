@@ -24,7 +24,7 @@ export default function (state = {}, action) {
       return {
          ...state,
          goals: action.payload.results,
-         list: JSON.parse(action.payload.list.result),
+         list: action.payload.list.result,
       };
    default:
       return state;

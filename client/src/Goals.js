@@ -40,20 +40,22 @@ class Goals extends React.Component {
 
 
    render() {
+      console.log('props', this.props);
+      console.log('state', this.state);
       const goalsByType = this.props.list
          .map(type => this.getGoalsOfType(type).map((goal) => {
             switch (goal.schedule_type) {
-            case 'daily':
-               return this.cardWrap(<DailyGoalReview key={goal.goal_id} goal={goal} />);
-            case 'weekly':
-               return this.cardWrap(<WeeklyGoalReview key={goal.goal_id} goal={goal} />);
-            case 'weekdays':
-               return this.cardWrap(<WeekdaysGoalReview key={goal.goal_id} goal={goal} />);
-            case 'endDate':
-               return this.cardWrap(<EndDateGoalReview key={goal.goal_id} goal={goal} />);
-            case 'custom':
-               return this.cardWrap(<CustomGoalReview key={goal.goal_id} goal={goal} />);
-            default:
+               case 'daily':
+                  return this.cardWrap(<DailyGoalReview key={goal.goal_id} goal={goal} />);
+               case 'weekly':
+                  return this.cardWrap(<WeeklyGoalReview key={goal.goal_id} goal={goal} />);
+               case 'weekdays':
+                  return this.cardWrap(<WeekdaysGoalReview key={goal.goal_id} goal={goal} />);
+               case 'endDate':
+                  return this.cardWrap(<EndDateGoalReview key={goal.goal_id} goal={goal} />);
+               case 'custom':
+                  return this.cardWrap(<CustomGoalReview key={goal.goal_id} goal={goal} />);
+               default:
             }
             return false;
          }));

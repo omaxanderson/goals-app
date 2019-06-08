@@ -45,7 +45,7 @@ export const getAll = async (userId, params) => {
 
    const results = await Db.query(sql);
 
-   const listPromise = ListController.index();
+   const listPromise = ListController.index(f_goal_types);
    const hydrated = results.map(async (goal) => {
       const completed = await hydrateReview(goal);
       return {
