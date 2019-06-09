@@ -32,6 +32,12 @@ html {
    text-align: center;
 }
 
+/*
+.day-container:hover {
+   background: red;
+}
+*/
+
 .loader {
    z-index: 100000;
    position: fixed;

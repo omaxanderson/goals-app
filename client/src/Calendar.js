@@ -21,7 +21,7 @@ class Calendar extends React.Component {
       this.props.dispatch({
          type: 'FETCH_GOALS',
          params: {
-            f_goal_types: 'weekly,weekdays,daily',
+            f_goal_types: 'weekly,weekdays,daily,endDate',
          },
       });
    }
@@ -46,6 +46,7 @@ class Calendar extends React.Component {
 
    render() {
       const { view } = this.state;
+
       return (
          <React.Fragment>
             <Navbar />
@@ -92,8 +93,9 @@ class Calendar extends React.Component {
                      </div>
 
                      <Grid
-                       month={this.state.month}
-                       year={this.state.year}
+                        month={this.state.month}
+                        year={this.state.year}
+                        goals={this.props.goals}
                      />
                   </React.Fragment>
                )
@@ -102,6 +104,10 @@ class Calendar extends React.Component {
       );
    }
 }
+
+export default connect(state => ({
+   goals: _.get(state, 'goals.goals', []),
+}))(Calendar);
 
 class Grid extends React.Component {
    render() {
@@ -114,6 +120,7 @@ class Grid extends React.Component {
 
    // man this is hacky...
    getWeeks = (month, year) => {
+      console.log(this.props.goals);
       const d = moment().month(month).year(year);
       let height = 100 / (d.endOf('month').week() - d.startOf('month').week() + 1);
       if (height < 0) {
@@ -150,27 +157,57 @@ class Grid extends React.Component {
             },
          ]);
       }
+      console.log(fullArr);
 
       const days = _.range(0, fullArr.length / 7).map(week => (
-         <div key={`week_${week}`} style={{ height: `${height}%` }}>
-            {fullArr.slice(week * 7, week * 7 + 7).map(({ num, color }) => (
+         <div key={`week_${week}`} style={{ overflow: 'hidden', height: `${height}%` }}>
+            {fullArr.slice(week * 7, week * 7 + 7).map(({ num, color, month}) => (
                <div
                   key={`day__${num}`}
                   style={{
                      height: '100%',
                      width: '14.286%',
-                     display: 'inline-block',
+                     display: 'inline-table',
                      borderLeft: '1px solid #CCCCCC',
                      borderTop: '1px solid #CCCCCC',
                      padding: '5px',
                   }}
+                  className='day-container'
                >
-                  <span
+                  <div
                     key={`day_${num}`}
                     style={{ paddingLeft: '0.5vw', color }}
                   >
                      {num}
-                  </span>
+                  </div>
+               { this.props.goals.map(goal => {
+                  // num is the day of month
+                  if (goal.schedule_type === 'weekdays') {
+
+                  } else if (goal.schedule_type === 'daily') {
+                     const date = moment().year(year).month(month).date(num).format('YYYY-MM-DD');
+                     const completed = goal.completed.find(review => {
+                        return review.date === date && review.completed;
+                     });
+                     if (completed) {
+                        return <div>Daily!</div>;
+                     }
+                  } else if (goal.schedule_type === 'endDate') {
+                     if (moment(goal.end_date).format('YYYY-MM-DD')
+                        === moment().month(month).date(num).year(year).format('YYYY-MM-DD')) {
+                        return <div>End Date!</div>;
+                     }
+                  } else if (goal.schedule_type === 'weekly') {
+                     const week = moment().month(month).year(year).date(num).week();
+                     const completed = goal.completed.find(review => (review.week_number === week
+                        && review.year === year
+                        && review.completed
+                     ));
+                     if (completed) {
+                        return <div>Weekly!</div>
+                     }
+                  }
+               }) }
                </div>
             ))}
          </div>
@@ -180,7 +217,6 @@ class Grid extends React.Component {
    }
 }
 
-// @TODO add the redux store
-export default connect(state => ({
-   goals: _.get(state, 'goals', []),
-}))(Calendar);
+Grid.defaultProps = {
+   goals: [],
+}
