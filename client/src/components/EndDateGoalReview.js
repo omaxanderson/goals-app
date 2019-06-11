@@ -24,7 +24,7 @@ class EndDateGoalReview extends React.Component {
       });
    }
 
-   getGoalReached = () => moment().isBefore(this.props.goal.end_date)
+   getGoalReached = () => this.props.goal.goal_reached;
 
    render() {
       return (

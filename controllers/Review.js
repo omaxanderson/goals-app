@@ -26,8 +26,7 @@ async function setWeekdaysComplete(goalId, completed) {
 
 // @TODO rename the end date column from end_date to completed_date
 async function setEndDateComplete(goalId, completed) {
-   const sql = Db.format(`REPLACE INTO end_date_goal_completed
-      VALUES (?, CURDATE(), ?)`, [goalId, completed]);
+   const sql = Db.format(`UPDATE goals SET goal_reached = ? WHERE goal_id = ?`, [completed, goalId]);
    const result = await Db.query(sql);
    return result;
 }
