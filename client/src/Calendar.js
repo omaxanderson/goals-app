@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import moment from 'moment';
 import Navbar from './components/Navbar';
+import 'materialize-css/dist/css/materialize.min.css';
+import M from 'materialize-css';
 
 class Calendar extends React.Component {
    constructor(props) {
@@ -24,6 +26,7 @@ class Calendar extends React.Component {
             f_goal_types: 'weekly,weekdays,daily,endDate',
          },
       });
+
    }
 
    nextMonth = () => {
@@ -44,8 +47,23 @@ class Calendar extends React.Component {
       }
    }
 
+   getSelectOptions = () => {
+      const t = this.props.goals.map(goal => (
+         <option
+            key={`select_${goal.goal_id}`}
+            value={goal.goal_id}
+         >
+         {goal.title}
+         </option>
+      ));
+      console.log(t);
+      return t;
+   }
+
    render() {
       const { view } = this.state;
+      // @TODO get this form select working properly
+      M.FormSelect.init(document.querySelectorAll('select'));
 
       return (
          <React.Fragment>
@@ -66,10 +84,15 @@ class Calendar extends React.Component {
                   </div>
                </div>
                <div className="col s4">
+                  <div className='input-field'>
+                     <select multiple>
+                        {this.getSelectOptions()}
+                     </select>
+                  </div>
                   <button
                     onClick={this.nextMonth}
                     style={{ marginRight: '3vw', marginTop: '1.3rem' }}
-                     className="right btn-floating cyan"
+                    className="right btn-floating cyan"
                   >
                      <i className="material-icons">arrow_forward</i>
                   </button>
@@ -120,7 +143,6 @@ class Grid extends React.Component {
 
    // man this is hacky...
    getWeeks = (month, year) => {
-      console.log(this.props.goals);
       const d = moment().month(month).year(year);
       let height = 100 / (d.endOf('month').week() - d.startOf('month').week() + 1);
       if (height < 0) {
@@ -157,13 +179,12 @@ class Grid extends React.Component {
             },
          ]);
       }
-      console.log(fullArr);
 
       const days = _.range(0, fullArr.length / 7).map(week => (
          <div key={`week_${week}`} style={{ overflow: 'hidden', height: `${height}%` }}>
             {fullArr.slice(week * 7, week * 7 + 7).map(({ num, color, month}) => (
                <div
-                  key={`day__${num}`}
+                  key={`day__${num}__${week}`}
                   style={{
                      height: '100%',
                      width: '14.286%',
@@ -190,7 +211,8 @@ class Grid extends React.Component {
                         return review.date === date && review.completed;
                      });
                      if (completed) {
-                        return <div>Daily!</div>;
+                        // lol this isn't really a unique key per se...
+                        return <div key={`${Math.random() * 1000000}`}>Daily!</div>;
                      }
                   } else if (goal.schedule_type === 'endDate') {
                      if (moment(goal.end_date).format('YYYY-MM-DD')
@@ -204,9 +226,12 @@ class Grid extends React.Component {
                         && review.completed
                      ));
                      if (completed) {
-                        return <div>Weekly!</div>
+                        // lol this isn't really a unique key per se...
+                        return <div key={`${Math.random() * 1000000}`}>Weekly!</div>
                      }
                   }
+
+                  return false;
                }) }
                </div>
             ))}
