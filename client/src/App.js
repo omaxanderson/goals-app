@@ -7,22 +7,20 @@ import CustomGoalChart from './CustomGoalChart';
 import Calendar from './Calendar';
 import store from './store';
 
-class App extends React.Component {
-   render() {
-      return (
-         <Provider store={store}>
-            <Router>
-               <Switch>
-                  <Route exact path="/" component={Goals} />
-                  <Route path="/create" component={GoalCreate} />
-                  <Route path="/chart" component={CustomGoalChart} />
-                  <Route path="/calendar" component={Calendar} />
-                  <Route path="*" component={FourOhFour} />
-               </Switch>
-            </Router>
-         </Provider>
-      );
-   }
+function App() {
+   return (
+      <Provider store={store}>
+         <Router>
+            <Switch>
+               <Route exact path="/" component={Goals} />
+               <Route path="/create" component={GoalCreate} />
+               <Route path="/chart" component={CustomGoalChart} />
+               <Route path="/calendar" component={Calendar} />
+               <Route path="*" component={FourOhFour} />
+            </Switch>
+         </Router>
+      </Provider>
+   );
 }
 
 class FourOhFour extends React.Component {
@@ -47,7 +45,7 @@ class FourOhFour extends React.Component {
       return (
          <div>
             <h3>404 Bruh wrong path</h3>
-            <p>But here's a random pic of a dog</p>
+            <p>But here&apos;s a random pic of a dog</p>
             <img src={this.state.imageUrl || ''} alt="random dog" />
          </div>
       );

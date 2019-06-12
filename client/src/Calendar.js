@@ -26,7 +26,6 @@ class Calendar extends React.Component {
             f_goal_types: 'weekly,weekdays,daily,endDate',
          },
       });
-
    }
 
    nextMonth = () => {
@@ -53,7 +52,7 @@ class Calendar extends React.Component {
             key={`select_${goal.goal_id}`}
             value={goal.goal_id}
          >
-         {goal.title}
+            {goal.title}
          </option>
       ));
       console.log(t);
@@ -84,7 +83,7 @@ class Calendar extends React.Component {
                   </div>
                </div>
                <div className="col s4">
-                  <div className='input-field'>
+                  <div className="input-field">
                      <select multiple>
                         {this.getSelectOptions()}
                      </select>
@@ -182,7 +181,7 @@ class Grid extends React.Component {
 
       const days = _.range(0, fullArr.length / 7).map(week => (
          <div key={`week_${week}`} style={{ overflow: 'hidden', height: `${height}%` }}>
-            {fullArr.slice(week * 7, week * 7 + 7).map(({ num, color, month}) => (
+            {fullArr.slice(week * 7, week * 7 + 7).map(({ num, color, month }) => (
                <div
                   key={`day__${num}__${week}`}
                   style={{
@@ -193,7 +192,7 @@ class Grid extends React.Component {
                      borderTop: '1px solid #CCCCCC',
                      padding: '5px',
                   }}
-                  className='day-container'
+                  className="day-container"
                >
                   <div
                     key={`day_${num}`}
@@ -201,38 +200,39 @@ class Grid extends React.Component {
                   >
                      {num}
                   </div>
-               { this.props.goals.map(goal => {
+                  { this.props.goals.map((goal) => {
                   // num is the day of month
-                  if (goal.schedule_type === 'weekdays') {
+                     if (goal.schedule_type === 'weekdays') {
 
-                  } else if (goal.schedule_type === 'daily') {
-                     const date = moment().year(year).month(month).date(num).format('YYYY-MM-DD');
-                     const completed = goal.completed.find(review => {
-                        return review.date === date && review.completed;
-                     });
-                     if (completed) {
+                     } else if (goal.schedule_type === 'daily') {
+                        const date = moment().year(year).month(month).date(num)
+                           .format('YYYY-MM-DD');
+                        const completed = goal.completed.find(review => review.date === date && review.completed);
+                        if (completed) {
                         // lol this isn't really a unique key per se...
-                        return <div key={`${Math.random() * 1000000}`}>Daily!</div>;
-                     }
-                  } else if (goal.schedule_type === 'endDate') {
-                     if (moment(goal.end_date).format('YYYY-MM-DD')
-                        === moment().month(month).date(num).year(year).format('YYYY-MM-DD')) {
-                        return <div>End Date!</div>;
-                     }
-                  } else if (goal.schedule_type === 'weekly') {
-                     const week = moment().month(month).year(year).date(num).week();
-                     const completed = goal.completed.find(review => (review.week_number === week
+                           return <div key={`${Math.random() * 1000000}`}>Daily!</div>;
+                        }
+                     } else if (goal.schedule_type === 'endDate') {
+                        if (moment(goal.end_date).format('YYYY-MM-DD')
+                        === moment().month(month).date(num).year(year)
+                           .format('YYYY-MM-DD')) {
+                           return <div>End Date!</div>;
+                        }
+                     } else if (goal.schedule_type === 'weekly') {
+                        const week = moment().month(month).year(year).date(num)
+                           .week();
+                        const completed = goal.completed.find(review => (review.week_number === week
                         && review.year === year
                         && review.completed
-                     ));
-                     if (completed) {
+                        ));
+                        if (completed) {
                         // lol this isn't really a unique key per se...
-                        return <div key={`${Math.random() * 1000000}`}>Weekly!</div>
+                           return <div key={`${Math.random() * 1000000}`}>Weekly!</div>;
+                        }
                      }
-                  }
 
-                  return false;
-               }) }
+                     return false;
+                  }) }
                </div>
             ))}
          </div>
@@ -244,4 +244,4 @@ class Grid extends React.Component {
 
 Grid.defaultProps = {
    goals: [],
-}
+};

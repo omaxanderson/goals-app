@@ -41,7 +41,7 @@ const getMigrationsToRun = async () => {
 const performMigration = async (migration) => {
    console.log('performing', migration);
    return new Promise(async (resolve, reject) => {
-      /* eslint-disable-next-line global-require */
+      /* eslint-disable-next-line */
       const migrationSql = require(`./files/${migration}`).default;
       if (migrationSql !== 'QUERY') {
          try {

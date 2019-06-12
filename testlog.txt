@@ -1,0 +1,15 @@
+
+> goals@0.0.0 daily-cron /Users/Max/programming/goals
+> babel-node crons/GoalReview.js daily
+
+daily cron run: 2019-06-11 10:13:02
+
+> goals@0.0.0 weekdays-cron /Users/Max/programming/goals
+> babel-node crons/GoalReview.js weekdays
+
+weekdays cron run: 2019-06-11 10:17:01
+
+> goals@0.0.0 end-date-cron /Users/Max/programming/goals
+> babel-node crons/GoalReview.js endDate
+
+end date cron run: 2019-06-11 10:18:02

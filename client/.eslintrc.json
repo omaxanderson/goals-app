@@ -32,6 +32,9 @@
        "no-restricted-syntax": 1,
        "no-underscore-dangle": "off",
        "camelcase": ["off"],
-       "react/jsx-indent": ["error", 3]
+       "react/jsx-indent": ["error", 3],
+       "react/jsx-filename-extension": "off",
+       "no-use-before-define": ["error", { "classes": false }],
+       "react/destructuring-assignment": "off"
     }
 }
