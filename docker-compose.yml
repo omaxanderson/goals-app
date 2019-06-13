@@ -1,0 +1,26 @@
+version: "3.7"
+services:
+   server:
+      build: .
+      ports:
+         - "8081:8081"
+      environment:
+         MAX_TEST_ENV: hello_world
+      volumes:
+         - ./:/app
+      networks:
+         - goals
+   client:
+      build: ./client
+      ports:
+         - "3000:3000"
+      environment:
+         CLIENT_TEST_ENV: hello_client
+      volumes:
+         - ./client/:/app/client
+      networks:
+         - goals
+
+   # TODO for prod - configure a mysql service
+networks:
+   goals:

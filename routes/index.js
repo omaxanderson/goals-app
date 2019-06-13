@@ -6,6 +6,7 @@ const router = express.Router();
 router.get('/', async (req, res, next) => {
    res.send(JSON.stringify({
       hello: 'get',
+      health: 'ok',
    }));
 });
 
